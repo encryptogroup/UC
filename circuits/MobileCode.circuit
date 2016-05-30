@@ -1,0 +1,144 @@
+0 input
+1 input
+2 input
+3 input
+4 input
+5 input
+6 input
+7 input
+8 input
+9 input
+10 input
+11 input
+12 input
+13 input
+14 input
+15 input
+16 input
+17 input
+18 input
+19 input
+20 input
+21 input
+22 input
+23 input
+24 input
+25 input
+26 input
+27 input
+28 input
+29 input
+30 input
+31 input
+32 input
+33 input
+34 input
+35 input
+36 input
+37 input
+38 input
+39 input
+40 input
+41 input
+42 input
+43 input
+44 input
+45 input
+46 input
+47 input
+48 input
+49 input
+50 input
+51 input
+52 input
+53 input
+54 input
+55 input
+56 input
+57 input
+58 input
+59 input
+60 input
+61 input
+62 input
+63 input
+64 input
+65 input
+66 input
+67 input
+68 input
+69 input
+70 input
+71 input
+72 input
+73 input
+74 input
+75 input
+76 input
+77 input
+78 input
+79 input
+80 gate arity 2 table [ 0 1 1 0 ] inputs [ 48 64 ]
+81 gate arity 2 table [ 0 1 1 0 ] inputs [ 49 65 ]
+82 gate arity 2 table [ 0 1 1 0 ] inputs [ 50 66 ]
+83 gate arity 2 table [ 0 1 1 0 ] inputs [ 51 67 ]
+84 gate arity 2 table [ 0 1 1 0 ] inputs [ 52 68 ]
+85 gate arity 2 table [ 0 1 1 0 ] inputs [ 53 69 ]
+86 gate arity 2 table [ 0 1 1 0 ] inputs [ 54 70 ]
+87 gate arity 2 table [ 0 1 1 0 ] inputs [ 55 71 ]
+88 gate arity 2 table [ 0 1 1 0 ] inputs [ 56 72 ]
+89 gate arity 2 table [ 0 1 1 0 ] inputs [ 57 73 ]
+90 gate arity 2 table [ 0 1 1 0 ] inputs [ 58 74 ]
+91 gate arity 2 table [ 0 1 1 0 ] inputs [ 59 75 ]
+92 gate arity 2 table [ 0 1 1 0 ] inputs [ 60 76 ]
+93 gate arity 2 table [ 0 1 1 0 ] inputs [ 61 77 ]
+94 gate arity 2 table [ 0 1 1 0 ] inputs [ 62 78 ]
+95 gate arity 2 table [ 0 1 1 0 ] inputs [ 63 79 ]
+96 gate arity 2 table [ 0 1 1 0 ] inputs [ 32 80 ]
+97 gate arity 2 table [ 0 1 1 0 ] inputs [ 33 81 ]
+98 gate arity 2 table [ 0 1 1 0 ] inputs [ 34 82 ]
+99 gate arity 2 table [ 0 1 1 0 ] inputs [ 35 83 ]
+100 gate arity 2 table [ 0 1 1 0 ] inputs [ 36 84 ]
+101 gate arity 2 table [ 0 1 1 0 ] inputs [ 37 85 ]
+102 gate arity 2 table [ 0 1 1 0 ] inputs [ 38 86 ]
+103 gate arity 2 table [ 0 1 1 0 ] inputs [ 39 87 ]
+104 gate arity 2 table [ 0 1 1 0 ] inputs [ 40 88 ]
+105 gate arity 2 table [ 0 1 1 0 ] inputs [ 41 89 ]
+106 gate arity 2 table [ 0 1 1 0 ] inputs [ 42 90 ]
+107 gate arity 2 table [ 0 1 1 0 ] inputs [ 43 91 ]
+108 gate arity 2 table [ 0 1 1 0 ] inputs [ 44 92 ]
+109 gate arity 2 table [ 0 1 1 0 ] inputs [ 45 93 ]
+110 gate arity 2 table [ 0 1 1 0 ] inputs [ 46 94 ]
+111 gate arity 2 table [ 0 1 1 0 ] inputs [ 47 95 ]
+112 gate arity 2 table [ 0 1 1 0 ] inputs [ 16 96 ]
+113 gate arity 2 table [ 0 1 1 0 ] inputs [ 17 97 ]
+114 gate arity 2 table [ 0 1 1 0 ] inputs [ 18 98 ]
+115 gate arity 2 table [ 0 1 1 0 ] inputs [ 19 99 ]
+116 gate arity 2 table [ 0 1 1 0 ] inputs [ 20 100 ]
+117 gate arity 2 table [ 0 1 1 0 ] inputs [ 21 101 ]
+118 gate arity 2 table [ 0 1 1 0 ] inputs [ 22 102 ]
+119 gate arity 2 table [ 0 1 1 0 ] inputs [ 23 103 ]
+120 gate arity 2 table [ 0 1 1 0 ] inputs [ 24 104 ]
+121 gate arity 2 table [ 0 1 1 0 ] inputs [ 25 105 ]
+122 gate arity 2 table [ 0 1 1 0 ] inputs [ 26 106 ]
+123 gate arity 2 table [ 0 1 1 0 ] inputs [ 27 107 ]
+124 gate arity 2 table [ 0 1 1 0 ] inputs [ 28 108 ]
+125 gate arity 2 table [ 0 1 1 0 ] inputs [ 29 109 ]
+126 gate arity 2 table [ 0 1 1 0 ] inputs [ 30 110 ]
+127 gate arity 2 table [ 0 1 1 0 ] inputs [ 31 111 ]
+128 output gate arity 2 table [ 0 1 1 0 ] inputs [ 0 112 ]
+129 output gate arity 2 table [ 0 1 1 0 ] inputs [ 1 113 ]
+130 output gate arity 2 table [ 0 1 1 0 ] inputs [ 2 114 ]
+131 output gate arity 2 table [ 0 1 1 0 ] inputs [ 3 115 ]
+132 output gate arity 2 table [ 0 1 1 0 ] inputs [ 4 116 ]
+133 output gate arity 2 table [ 0 1 1 0 ] inputs [ 5 117 ]
+134 output gate arity 2 table [ 0 1 1 0 ] inputs [ 6 118 ]
+135 output gate arity 2 table [ 0 1 1 0 ] inputs [ 7 119 ]
+136 output gate arity 2 table [ 0 1 1 0 ] inputs [ 8 120 ]
+137 output gate arity 2 table [ 0 1 1 0 ] inputs [ 9 121 ]
+138 output gate arity 2 table [ 0 1 1 0 ] inputs [ 10 122 ]
+139 output gate arity 2 table [ 0 1 1 0 ] inputs [ 11 123 ]
+140 output gate arity 2 table [ 0 1 1 0 ] inputs [ 12 124 ]
+141 output gate arity 2 table [ 0 1 1 0 ] inputs [ 13 125 ]
+142 output gate arity 2 table [ 0 1 1 0 ] inputs [ 14 126 ]
+143 output gate arity 2 table [ 0 1 1 0 ] inputs [ 15 127 ]

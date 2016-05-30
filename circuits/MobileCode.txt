@@ -1,0 +1,18 @@
+/*
+ * Execute Bob's private mobile code
+ * in untrustworthy environment Alice
+ * e.g. to create serial number
+ */
+program MobileCode {
+  const insize=4;
+  type Byte = Int<16>;
+  type AliceInput = Byte[insize];
+  type BobInput = struct {Byte OTP};
+  type AliceOutput = Byte;
+  type Input = struct {AliceInput alice, BobInput bob};
+  type Output = struct {AliceOutput alice};
+
+  function Output output(Input input) {
+    output.alice = input.alice[0] ^ input.alice[1] ^ input.alice[2] ^ input.alice[3] ^ input.bob.OTP;
+  }
+}

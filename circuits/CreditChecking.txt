@@ -1,0 +1,26 @@
+/*
+ * Check if Alice gets a credit
+ * using private checking criteria
+ */
+program CreditChecking {
+  type Byte = Int<8>;
+  type Integer = Int<16>;
+  type AliceInput = struct {Boolean is_male, 
+                            Byte age,
+                            Integer income};
+  type BobOutput = Boolean; 
+  type Input = struct {AliceInput alice};
+  type Output = struct {BobOutput bob};
+
+  function Output output(Input input) {
+    output.bob = ((input.alice.is_male==false &	// women get credit if
+                     input.alice.age >= 18 &	// age at least 18
+                     input.alice.income >= 50)	// income at least 50
+
+                | (input.alice.is_male==true &	// men get credit if
+                     input.alice.age >= 21 &	// age at least 21
+                     input.alice.income >= 40))	// and income at least 40
+
+                & input.alice.age < 100;	// too old people don't get credits
+	}
+}
