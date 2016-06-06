@@ -58,6 +58,15 @@ int main(int argc, char * argv[]){
   uint32_t input = 0;
   uint32_t output = 0;
 
+string SHDL2[5] = {
+        "../circuits/adder_32bit.txt_SHDL.circuit",
+        "../circuits/comparator_32bit_signed_lt.txt_SHDL.circuit",
+        "../circuits/mult_32x32.txt_SHDL.circuit",
+
+        "../circuits/MobileCode.circuit",
+        "../circuits/CreditChecking.circuit",
+   };
+
 string SHDL[5] = {
         "../circuits/adder_32bit.txt_SHDL.circuit_Mod_SHDL.circuit",
         "../circuits/comparator_32bit_signed_lt.txt_SHDL.circuit_Mod_SHDL.circuit",
@@ -70,7 +79,7 @@ string SHDL[5] = {
   uint16_t i = 0;
 
   cout << endl << "START SHDL" << endl;
-  SHDL_to_SHDL(SHDL[i]);
+  SHDL_to_SHDL(SHDL2[i]);
   cout << "END SHDL" << endl;
 
   cout << endl << "START UC" << endl;
@@ -119,8 +128,8 @@ string SHDL[5] = {
   cout << endl;
   #endif // DEBUG_CORRECTNESS
 
-  //clearup(G);
-  //gg->~DAG_Gamma2();
+  clearup(G);
+  gg->~DAG_Gamma2();
   return 0;
 }
 

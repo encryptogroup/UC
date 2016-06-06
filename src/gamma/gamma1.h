@@ -48,14 +48,18 @@ class DAG_Gamma1 {
         bool is_output;
 
         Node(uint32_t id);
+	Node(const Node&);
+
       };
   public:
       // Array of nodes that belong to the Gamma1 graph
+      //vector<Node*> node_array;
       Node** node_array;
       // Number of nodes in node_array
       uint32_t node_number;
 
       DAG_Gamma1(uint32_t num);
+      DAG_Gamma1(const DAG_Gamma1&);
 
       void add_edge(Node* a, Node* b);
       void delete_last_node();

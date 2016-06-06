@@ -63,7 +63,7 @@ void Valiant_DAG::topologically_sort(uint32_t u){
     }
 
     // Topological sorting
-    Node* actual;
+    Node* actual = 0;
     Node* right;
     Node* left;
     uint32_t index = 0;

@@ -37,7 +37,7 @@ Our UC compiler was developed in C/C++ and therefore requires [`g++`](https://pa
 	git clone --recursive git://github.com/encryptogroup/UC
 	```
 
-2. Enter the Framework directory: `cd UC/`
+2. Enter the Framework directory: `cd UC/src/`
 
 
 ### Examples

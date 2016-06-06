@@ -38,6 +38,18 @@ DAG_Gamma2::Node::Node(uint32_t num)
       this->set_function_bits(2, 2, 2, 2);
 }
 
+DAG_Gamma2::Node::Node(const Node& other){
+    number = other.number;
+    left = new Node(*(other.left));
+    right = new Node(*(other.right));
+    left_parent = new Node(*(other.left_parent));
+    right_parent = new Node(*(other.right_parent));
+    colored = other.colored;
+    output = other.output;
+    set_function_bits(other.function_bits[0], other.function_bits[1], other.function_bits[2], other.function_bits[3]);
+    is_bitchanged = other.is_bitchanged;
+}
+
 /**
  * Check that the node exists and is not colored, returns true if so.
  */
@@ -88,12 +100,26 @@ DAG_Gamma2::DAG_Gamma2(uint32_t num)
   , sub_left(0)
   , sub_right(0)
   , gamma1_left(0)
-  , gamma1_right(0){
+  , gamma1_right(0)
+  {
 	node_array = new Node*[node_number];
 	for(uint32_t i = 0; i < node_number; ++i){
 		node_array[i] = new Node(i + 1);
 	}
 }
+
+DAG_Gamma2::DAG_Gamma2(const DAG_Gamma2& other){
+    node_number = other.node_number;
+    sub_left = new DAG_Gamma2(*(other.sub_left)); //recursive
+    sub_right = new DAG_Gamma2(*(other.sub_right)); //recursive
+    gamma1_left = new DAG_Gamma1(*(other.gamma1_left));
+    gamma1_right = new DAG_Gamma1(*(other.gamma1_right));
+    node_array = new Node*[node_number];
+	for(uint32_t i = 0; i < node_number; ++i){
+		node_array[i] = new Node(*(other.node_array[i]));
+	}
+}
+
 
 /**
  * Add an edge between two nodes
@@ -160,11 +186,13 @@ DAG_Gamma2::Node* DAG_Gamma2::smallest_uncolored_with_child(){
  * @param gamma1_graph the Gamma1 into which the edges have to be added based on the Gamma2 graph
  */
 void DAG_Gamma2::add_edges(DAG_Gamma1* gamma1_graph){
-    DAG_Gamma1::Node* first;
-    DAG_Gamma1::Node* second;
+    DAG_Gamma1::Node* first = 0;
+    DAG_Gamma1::Node* second = 0;
     for(uint32_t i = 0; i < gamma1_graph->node_number; i += 2){
         first = gamma1_graph->node_array[i];
-        second = gamma1_graph->node_array[i + 1];
+        if( i + 1 < gamma1_graph->node_number ){
+            second = gamma1_graph->node_array[i + 1];
+        }
         if(first && first->child && first->child != first && first->child != second){
             #ifdef DEBUG_GAMMA2
             cout << "edge " << i/2 << "  " << (first->child->number - 1)/2-1 << endl;
@@ -189,6 +217,9 @@ void DAG_Gamma2::create_subgraphs(uint32_t previous_node_num){
     pair<DAG_Gamma1*, DAG_Gamma1*> p = create_from_Gamma2(this, previous_node_num);
     this->gamma1_right = p.first;
     this->gamma1_left = p.second;
+
+    //p.first->~DAG_Gamma1();
+    //p.second->~DAG_Gamma1();
 
     uint32_t left_node_num = node_number/2;
     uint32_t right_node_num = node_number/2;
@@ -333,7 +364,7 @@ bool coloring(DAG_Gamma2::Node* parent, DAG_Gamma2::Node* child, bool color, DAG
             #ifdef DEBUG_OUTPUT
             cout << "is_output g1" << endl;
             #endif // DEBUG_OUTPUT
-            current->node_array[child->number-1]->is_output = true;
+            current->node_array[child->number - 1]->is_output = true;
         }
 		current->add_edge(current->node_array[parent->number - 1], current->node_array[child->number - 1]);
 		return true;
@@ -488,6 +519,7 @@ pair<DAG_Gamma1*, DAG_Gamma1*> create_from_Gamma2(DAG_Gamma2* g, uint32_t previo
 	tmp2->~DAG_Gamma2();
 	delete tmp1;
 	delete tmp2;
+
 	return p;
 }
 
@@ -495,27 +527,23 @@ pair<DAG_Gamma1*, DAG_Gamma1*> create_from_Gamma2(DAG_Gamma2* g, uint32_t previo
  * Destructor Gamma2
  */
 DAG_Gamma2::~DAG_Gamma2(){
-	if(node_number > 0){
-		for (uint32_t i = 0; i < node_number; i++)
-     	{
-         	delete node_array[i];
-         	node_number = 0;
-     	}
-	}
 	if(this->sub_left){
         this->sub_left->~DAG_Gamma2();
-        delete this->sub_left;
 	}
 	if(this->sub_right){
         this->sub_right->~DAG_Gamma2();
-        delete this->sub_right;
 	}
 	if(this->gamma1_left){
         this->gamma1_left->~DAG_Gamma1();
-        delete this->gamma1_left;
 	}
 	if(this->gamma1_right){
         this->gamma1_right->~DAG_Gamma1();
-        delete this->gamma1_right;
+	}
+	if(node_number > 0){
+		for (uint32_t i = 0; i < node_number; i++){
+         	delete node_array[i];
+     	}
+     	delete [] node_array;
+        node_number = 0;
 	}
 }

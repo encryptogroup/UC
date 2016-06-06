@@ -45,6 +45,10 @@ Node::Node(uint32_t num, uint32_t orig_fanout, uint32_t& num2, uint32_t k){
     }
 }
 
+Node::~Node(){
+    delete left;
+}
+
 /* gives back node with number = num if add = 0, otherwise searches for num + add numbered node */
 Node* getnode(list<Node*> coll, uint32_t num, uint32_t add){
     Node* tmp;
@@ -180,7 +184,9 @@ void set_shift(vector<uint32_t>& shift, vector<uint32_t>& fanout, uint32_t input
         if(tmp > 2){
             shift_global += tmp - 2;
         }
-        shift[i + 1] += shift_global;
+        if( i + 1  < fanout.size() ){
+            shift[i + 1] += shift_global;
+        }
    }
    for(uint32_t i = 0; i < inputs; ++i){
         shift[i] = 0;
@@ -344,6 +350,10 @@ void all_nodes(string filename2, uint32_t gate_num, vector<uint32_t> fanout, vec
         }
     }
     outputs_coll.clear();
+    for(list<Node*>::iterator it = collection.begin(); it != collection.end(); ++it){
+        delete (*it);
+    }
+    collection.clear();
 
 }
 
@@ -380,7 +390,6 @@ void SHDL_to_SHDL(string filename2){
    cout << "5. All other nodes done" << endl;
    all_nodes(filename2, gate_num, fanout, shift, inputs, output_num);
 
-   collection.clear();
    fanout.clear();
    shift.clear();
 }

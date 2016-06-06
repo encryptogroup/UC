@@ -56,6 +56,7 @@ class DAG_Gamma2 {
         bool is_bitchanged;
 
         Node(uint32_t);
+        Node(const Node&);
 
         bool node_not_colored();
         Node* other_child_or_parent(Node* other_node, Node* left_node, Node* right_node);
@@ -63,6 +64,7 @@ class DAG_Gamma2 {
         void prepare_bipartite(DAG_Gamma2* tmp1, DAG_Gamma2* tmp2, uint32_t i, uint32_t& edge_num);
       };
    // Array of nodes that belong to the Gamma1 graph
+   //vector<Node*> node_array;
    Node** node_array;
    // Number of nodes in node_array
    uint32_t node_number;
@@ -77,6 +79,7 @@ class DAG_Gamma2 {
    struct DAG_Gamma1* gamma1_right;
 
    DAG_Gamma2(uint32_t);
+   DAG_Gamma2(const DAG_Gamma2&);
 
    void add_edge(Node*, Node*);
    Node* smallest_uncolored_with_child();

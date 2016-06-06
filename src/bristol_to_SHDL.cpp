@@ -290,6 +290,6 @@ int main(void){
         "../circuits/mult_32x32.txt"
     };
 
-    read_Bristol_circuit(filename[2], input_num_total, output_num);
+    read_Bristol_circuit(filename[0], input_num_total, output_num);
 
 }

@@ -31,6 +31,14 @@ DAG_Gamma1::Node::Node(uint32_t num)
   , is_output(false) {
 }
 
+DAG_Gamma1::Node::Node(const Node& other){
+    number = other.number;
+    is_embedded = other.is_embedded;
+    parent = new Node(*(other.parent));
+    child = new Node(*(other.child));
+    is_output = other.is_output;
+}
+
 /**
  * Gamma1 constructor that creates a gamma1 graph with specified number of Nodes
  * @param num the number specifying the number of Nodes
@@ -41,6 +49,14 @@ DAG_Gamma1::DAG_Gamma1(uint32_t num){
 	node_array = new Node*[node_number];
 	for(uint32_t i = 0; i < node_number; ++i){
 		node_array[i] = new Node(i + 1);
+	}
+}
+
+DAG_Gamma1::DAG_Gamma1(const DAG_Gamma1& other){
+    node_number = other.node_number;
+    node_array = new Node*[node_number];
+	for(uint32_t i = 0; i < node_number; ++i){
+		node_array[i] = new Node(*(other.node_array[i]));
 	}
 }
 
@@ -75,6 +91,9 @@ void DAG_Gamma1::delete_last_node(){
  * @return bool true if exists, false if not
  */
 bool DAG_Gamma1::check_exist(uint32_t new_index1){
+    if(new_index1 > this->node_number-1){
+        return false;
+    }
     if(this && this->node_array[new_index1] && this->node_array[new_index1]->child){
         return true;
     }
@@ -98,11 +117,10 @@ bool DAG_Gamma1::check_right(uint32_t new_index1, uint32_t new_index2){
  * Gamma1 Destructor
  */
 DAG_Gamma1::~DAG_Gamma1(){
-	if(node_number > 0){
-		for (uint32_t i = 0; i < node_number; i++){
-         	delete node_array[i];
-         	node_array[i] = 0;
-         	node_number = 0;
-     	}
-	}
+    if(this && this->node_number > 0){
+        for(uint32_t i = 0; i < this->node_number; i++){
+            delete node_array[i];
+            node_number = 0;
+        }
+    }
 }
