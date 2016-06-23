@@ -33,22 +33,18 @@
 #include <algorithm>
 #include <stdint.h>
 
-//#define DEBUG_GRAPH
+#include "../uc/valiant.h"
 
 using namespace std;
-
-void print_pair_Gamma1(pair<DAG_Gamma1*, DAG_Gamma1*> p);
 
 void print_Gamma2_simple(DAG_Gamma2* g);
 void print_gamma2(DAG_Gamma2* , string);
 void print_gamma2_full(DAG_Gamma2*);
 
-void print_Graph_full(Valiant_DAG*);
-void print_Graph(Valiant_DAG*, string, string);
-void print_Graph_top_order(Valiant_DAG*, string, string);
-void print_Graph_full_top_order(Valiant_DAG*);
+void print_Graph_full(Valiant_DAG*, bool top_order, bool merged);
+void print_Graph(Valiant_DAG*, string, string, bool top_order);
+
 void print_labels_merged(Valiant_DAG* g, string substring1, string substring2, bool outest);
 void print_Graph_merged(Valiant_DAG* g, string substring1, string substring2, bool outest);
-void print_Graph_full_merged_top_order(Valiant_DAG* g);
 
 #endif // PRINT_GRAPH_H_INCLUDED

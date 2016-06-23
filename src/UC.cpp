@@ -18,7 +18,7 @@
 //#define DEBUG_EMBEDDING
 #define TIME
 #define STATE
-//#define DEBUG_GRAPH
+//#define DEBUG_GRAPH //HAS TO BE UNDEFINED WHEN MEASURING PERFORMANCE!!!
 #define DEBUG_CORRECTNESS
 
 #include <stdint.h>
@@ -27,7 +27,10 @@
 #include "gamma/gamma1.cpp"
 #include "gamma/gamma2.cpp"
 
+#ifdef DEBUG_GRAPH
 #include "util/print_graph.cpp"
+#endif // DEBUG_GRAPH
+
 #include "util/read_SHDL.cpp"
 #include "util/SHDL_to_SHDL.cpp"
 
@@ -41,20 +44,6 @@ inline clock_t getMilliSecs() {
 }
 
 int main(int argc, char * argv[]){
-
-#ifdef DEBUG_EMBEDDING
-  DAG_Gamma2* g2 = random_init(17);
-  g2->create_subgraphs(0);
-  print_gamma2_full(g2);
-
-  Valiant_DAG* g = embedding_merged("", g2, 0, 0);
-  print_Graph_full(g);
-
-  uint32_t node_num = 14532;
-  DAG_Gamma2* g5 = random_init(node_num);
-  Valiant_DAG* g = embedding_merged(g5, 0, 0);
-#endif
-
   uint32_t input = 0;
   uint32_t output = 0;
 
@@ -94,16 +83,10 @@ string SHDL[5] = {
   Valiant_DAG* G = embedding_merged(gg, input, output);
   clock_t time2 = getMilliSecs();
   cout << "Embedding time: " << (time2 - time1) << "ms" << endl;
-  #ifdef DEBUG_GRAPH
-  print_Graph_full_merged_top_order(G);
-  #endif // DEBUG_GRAPH
 
   G->print_circuit(input, output, tmp);
   clock_t time3 = getMilliSecs();
   cout << "I/O time: " << (time3 - time2) + (time1 - start) << "ms" << endl;
-  #ifdef DEBUG_GRAPH
-  print_Gamma2_simple(gg);
-  #endif
   cout << "END UC" << endl;
 
   #ifdef DEBUG_CORRECTNESS

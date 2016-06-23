@@ -666,6 +666,10 @@ void embedding_with_supergraph(DAG_Gamma2* g, uint32_t index1, uint32_t index2, 
  * @param v number of outputs
  */
 Valiant_DAG* embedding_merged(DAG_Gamma2* g, uint32_t u, uint32_t v){
+  #ifdef DEBUG_GRAPH
+  print_Gamma2_simple(g);
+  #endif
+
   uint32_t node_num = g->node_number;
   DAG_Gamma2::Node* the_node = 0;
 
@@ -702,6 +706,11 @@ Valiant_DAG* embedding_merged(DAG_Gamma2* g, uint32_t u, uint32_t v){
         the_node = g->node_array[i];
         g2->pole_array[i]->control_num = the_node->function_bits[0] * 1 + the_node->function_bits[1] * 2 + the_node->function_bits[2] * 4 + the_node->function_bits[3] * 8;
   }
+
+  #ifdef DEBUG_GRAPH
+  print_Graph_full(g2, false, true);
+  #endif // DEBUG_GRAPH
+
   return g2;
 }
 

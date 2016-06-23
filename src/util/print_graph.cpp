@@ -21,202 +21,12 @@
 //NOTE: NOT CHECKED, might have functions that do not work anymore
 //print_Graph_full_merged_top_order() function is the best to be used and it works!
 
-#ifdef DEBUG_GRAPH
-void print_Graph_full(Valiant_DAG* g){
-	ofstream file;
-	file.open ("graphviz/graph.txt");
-	file << "digraph {" << endl;
-	file.close();
+#include "print_graph.h"
 
-	string substring = "";
-	print_Graph(g, substring, substring);
-
-	file.open ("graphviz/graph.txt", std::ofstream::app);
-	file << "}" << endl;
-	file.close();
-}
-
-void print_Graph_full_top_order(Valiant_DAG* g){
-	ofstream file;
-	file.open ("graphviz/graph.txt");
-	file << "digraph {" << endl;
-	file.close();
-
-	string substring = "";
-	print_Graph_top_order(g, substring, substring);
-
-	file.open ("graphviz/graph.txt", std::ofstream::app);
-	file << "}" << endl;
-	file.close();
-}
-
-void print_Graph(Valiant_DAG* g, string substring1, string substring2){
-	ofstream file;
-	file.open ("graphviz/graph.txt", std::ofstream::app);
-	string str;
-	for(uint32_t i = 0; i < g->pole_number; ++i){
-		if(g->pole_array[i]->left){
-			if(g->pole_array[i]->left->is_pole){
-				if(g->pole_array[i]->is_left_in_subleft){
-					file << substring1 << "p" << g->pole_array[i]->number << " -> " << substring1 << "sl" << "p" << g->pole_array[i]->left->number << ";" << endl;
-				}
-				else if(g->pole_array[i]->is_left_in_subright){
-					file << substring1 << "p" << g->pole_array[i]->number << " -> " << substring1 << "sr" << "p" << g->pole_array[i]->left->number << ";" << endl;
-				}
-				else if(g->pole_array[i]->is_left_outer){
-					str = substring1.substr(substring1.size()-2,2);
-					substring1.erase(substring1.end()-2, substring1.end());
-					file << substring1 << str << "p" << g->pole_array[i]->number << " -> " << substring1 << "p" << g->pole_array[i]->left->number << ";" << endl;
-					substring1 += str;
-				}
-				else{
-					file << substring1 << "p" << g->pole_array[i]->number << " -> " << substring1 << "p" << g->pole_array[i]->left->number << ";" << endl;
-				}
-			}
-			else{
-				if(g->pole_array[i]->is_left_in_subleft){
-					file << substring1 << "p" << g->pole_array[i]->number << " -> " << substring1 << "sl" << "n" << g->pole_array[i]->left->number << ";" << endl;
-				}
-				else if(g->pole_array[i]->is_left_in_subright){
-					file << substring1 << "p" << g->pole_array[i]->number << " -> " << substring1 << "sr" << "n" << g->pole_array[i]->left->number << ";" << endl;
-				}
-				else if(g->pole_array[i]->is_left_outer){
-					str = substring1.substr(substring1.size()-2,2);
-					substring1.erase(substring1.end()-2, substring1.end());
-					file << substring1 << str << "p" << g->pole_array[i]->number << " -> " << substring1 << "n" << g->pole_array[i]->left->number << ";" << endl;
-					substring1 += str;
-				}
-				else{
-					file << substring1 << "p" << g->pole_array[i]->number << " -> " << substring1 << "n" << g->pole_array[i]->left->number << ";" << endl;
-				}
-			}
-		}
-		if(g->pole_array[i]->right){
-			if(g->pole_array[i]->right->is_pole){
-				if(g->pole_array[i]->is_right_in_subright){
-					file << substring2 << "p" << g->pole_array[i]->number << " -> " << substring2 << "sr" << "p" << g->pole_array[i]->right->number << ";" << endl;
-				}
-				else if(g->pole_array[i]->is_right_in_subleft){
-					file << substring2 << "p" << g->pole_array[i]->number << " -> " << substring2 << "sl" << "p" << g->pole_array[i]->right->number << ";" << endl;
-				}
-				else if(g->pole_array[i]->is_right_outer){
-					str = substring2.substr(substring2.size()-2,2);
-					substring2.erase(substring2.end()-2, substring2.end());
-					file << substring2 << str << "p" << g->pole_array[i]->number << " -> " << substring2 << "p" << g->pole_array[i]->right->number << ";" << endl;
-					substring2 += str;
-				}
-				else{
-					file << substring2 << "p" << g->pole_array[i]->number << " -> " << substring2 << "p" << g->pole_array[i]->right->number << ";" << endl;
-				}
-			}
-			else{
-				if(g->pole_array[i]->is_right_in_subright){
-					file << substring2 << "p" << g->pole_array[i]->number << " -> " << substring2 << "sr" << "n" << g->pole_array[i]->right->number << ";" << endl;
-				}
-				else if(g->pole_array[i]->is_right_in_subleft){
-					file << substring2 << "p" << g->pole_array[i]->number << " -> " << substring2 << "sl" << "n" << g->pole_array[i]->right->number << ";" << endl;
-				}
-				else if(g->pole_array[i]->is_right_outer){
-					str = substring2.substr(substring2.size()-2,2);
-					substring2.erase(substring2.end()-2, substring2.end());
-					file << substring2 << str << "p" << g->pole_array[i]->number << " -> " << substring2 << "n" << g->pole_array[i]->right->number << ";" << endl;
-					substring2 += str;
-				}
-				else{
-					file << substring2 << "p" << g->pole_array[i]->number << " -> " << substring2 << "n" << g->pole_array[i]->right->number << ";" << endl;
-				}
-			}
-		}
-	}
-	for(uint32_t i = 0; i < g->node_number; ++i){
-		if(g->node_array[i]->left){
-			if(g->node_array[i]->left->is_pole){
-				if(g->node_array[i]->is_left_in_subleft){
-					file << substring1 << "n" << g->node_array[i]->number << " -> " << substring1 << "sl" << "p" << g->node_array[i]->left->number << ";" << endl;
-				}
-				else if(g->node_array[i]->is_left_in_subright){
-					file << substring1 << "n" << g->node_array[i]->number << " -> " << substring1 << "sr" << "p" << g->node_array[i]->left->number << ";" << endl;
-				}
-				else if(g->node_array[i]->is_left_outer){
-					str = substring1.substr(substring1.size()-2,2);
-					substring1.erase(substring1.end()-2, substring1.end());
-					file << substring1 << str << "n" << g->node_array[i]->number << " -> " << substring1 << "p" << g->node_array[i]->left->number << ";" << endl;
-					substring1 += str;
-				}
-				else{
-					file << substring1 << "n" << g->node_array[i]->number << " -> " << substring1 << "p" << g->node_array[i]->left->number << ";" << endl;
-				}
-			}
-			else{
-				if(g->node_array[i]->is_left_in_subleft){
-					file << substring1 << "n" << g->node_array[i]->number << " -> " << substring1 << "sl" << "n" << g->node_array[i]->left->number << ";" << endl;
-				}
-				else if(g->node_array[i]->is_left_in_subright){
-					file << substring1 << "n" << g->node_array[i]->number << " -> " << substring1 << "sr" << "n" << g->node_array[i]->left->number << ";" << endl;
-				}
-				else if(g->node_array[i]->is_left_outer){
-					str = substring1.substr(substring1.size()-2,2);
-					substring1.erase(substring1.end()-2, substring1.end());
-					file << substring1 << str << "n" << g->node_array[i]->number << " -> " << substring1 << "n" << g->node_array[i]->left->number << ";" << endl;
-					substring1 += str;
-				}
-				else{
-					file << substring1 << "n" << g->node_array[i]->number << " -> " << substring1 << "n" << g->node_array[i]->left->number << ";" << endl;
-				}
-			}
-		}
-		if(g->node_array[i]->right){
-			if(g->node_array[i]->right->is_pole){
-				if(g->node_array[i]->is_right_in_subright){
-					file << substring2 << "n" << g->node_array[i]->number << " -> " << substring2 << "sr" << "p" << g->node_array[i]->right->number << ";" << endl;
-				}
-				else if(g->node_array[i]->is_right_in_subleft){
-					file << substring2 << "n" << g->node_array[i]->number << " -> " << substring2 << "sl" << "p" << g->node_array[i]->right->number << ";" << endl;
-				}
-				else if(g->node_array[i]->is_right_outer){
-					str = substring2.substr(substring2.size()-2,2);
-					substring2.erase(substring2.end()-2, substring2.end());
-					file << substring2 << str << "n" << g->node_array[i]->number << " -> " << substring2 << "p" << g->node_array[i]->right->number << ";" << endl;
-					substring2 += str;
-				}
-				else{
-					file << substring2 << "n" << g->node_array[i]->number << " -> " << substring2 << "p" << g->node_array[i]->right->number << ";" << endl;
-				}
-			}
-			else{
-				if(g->node_array[i]->is_right_in_subright){
-					file << substring2 << "n" << g->node_array[i]->number << " -> " << substring2 << "sr" << "n" << g->node_array[i]->right->number << ";" << endl;
-				}
-				else if(g->node_array[i]->is_right_in_subleft){
-					file << substring2 << "n" << g->node_array[i]->number << " -> " << substring2 << "sl" << "n" << g->node_array[i]->right->number << ";" << endl;
-				}
-				else if(g->node_array[i]->is_right_outer){
-					str = substring2.substr(substring2.size()-2,2);
-					substring2.erase(substring2.end()-2, substring2.end());
-					file << substring2 << str << "n" << g->node_array[i]->number << " -> " << substring2 << "n" << g->node_array[i]->right->number << ";" << endl;
-					substring2 += str;
-				}
-				else{
-					file << substring2 << "n" << g->node_array[i]->number << " -> " << substring2 << "n" << g->node_array[i]->right->number << ";" << endl;
-				}
-			}
-		}
-	}
-	if(g->sub_left){
-		substring1 += "sl";
-		print_Graph(g->sub_left, substring1, substring1);
-	}
-	if(g->sub_right){
-		substring2 += "sr";
-		print_Graph(g->sub_right, substring2, substring2);
-	}
-	file.close();
-}
-
-
+/** Print simple Gamma2 graph into gamma2.txt file */
 void print_Gamma2_simple(DAG_Gamma2* g){
     ofstream file;
-    file.open ("graphviz/gamma2.txt");
+    file.open ("../graphviz/gamma2.txt");
 	file << "digraph{" << endl;
 
     for (uint32_t i = 0; i < g->node_number; i++){
@@ -231,36 +41,25 @@ void print_Gamma2_simple(DAG_Gamma2* g){
 	file.close();
 }
 
-void print_pair_Gamma1(pair<DAG_Gamma1*, DAG_Gamma1*> p){
+/** Print Gamma2 supergraph into gamma2_super.txt file */
+void print_gamma2_full(DAG_Gamma2* g){
     ofstream file;
-	ofstream file1;
-	ofstream file2;
-	file1.open ("graphviz/gamma1_1.txt");
-	file2.open ("graphviz/gamma1_2.txt");
-	file1 << "digraph {" << endl;
-	file2 << "digraph {" << endl;
+	file.open ("../graphviz/gamma2_super.txt");
+	file << "digraph {" << endl;
+	file.close();
 
-	for(uint32_t i = 0; i < p.first->node_number; ++i){
-        if(p.first->node_array[i]->child){
-            file1 << "m" << p.first->node_array[i]->number << " -> m" << p.first->node_array[i]->child->number << ";" << endl;
-        }
-	}
-	for(uint32_t i = 0; i < p.second->node_number; ++i){
-        if(p.second->node_array[i]->child){
-            file2 << "m" << p.second->node_array[i]->number << " -> m" << p.second->node_array[i]->child->number << ";" << endl;
-        }
-	}
+	string substring = "";
+	print_gamma2(g, substring);
 
-	file1 << "}" << endl;
-	file2 << "}" << endl;
-	file1.close();
-	file2.close();
+	file.open ("../graphviz/gamma2_super.txt", std::ofstream::app);
+	file << "}" << endl;
+	file.close();
 }
 
-
+/** Print Gamma2 supergraph into gamma2_super.txt file */
 void print_gamma2(DAG_Gamma2* g, string substring){
     ofstream file;
-	file.open ("graphviz/gamma2_super.txt", std::ofstream::app);
+	file.open ("../graphviz/gamma2_super.txt", std::ofstream::app);
 	for(uint32_t i = 0; i < g->node_number; i++){
         if(g->node_array[i]->left){
             file << substring << g->node_array[i]->number << " -> " << substring << g->node_array[i]->left->number;
@@ -288,95 +87,115 @@ void print_gamma2(DAG_Gamma2* g, string substring){
 	file.close();
 }
 
-void print_gamma2_full(DAG_Gamma2* g){
-    ofstream file;
-	file.open ("graphviz/gamma2_super.txt");
+/** Print the full Valiant graph */
+void print_Graph_full(Valiant_DAG* g, bool top_order, bool merged){
+	ofstream file;
+	file.open ("../graphviz/graph.txt");
 	file << "digraph {" << endl;
+	if(merged){
+        file << "node [shape = circle, style = filled, fillcolor = white, width = 0.2];";
+	}
 	file.close();
 
 	string substring = "";
-	print_gamma2(g, substring);
+	if(merged){
+        print_labels_merged(g, substring, substring, true);
+        substring = "";
+        print_Graph_merged(g, substring, substring, true);
+	}
+	else if(top_order){
+        print_Graph(g, substring, substring, true);
+	}
+    else{
+        print_Graph(g, substring, substring, false);
+	}
 
-	file.open ("graphviz/gamma2_super.txt", std::ofstream::app);
+	file.open ("../graphviz/graph.txt", std::ofstream::app);
 	file << "}" << endl;
 	file.close();
 }
 
+uint32_t getnum(Valiant_DAG::Node* n, bool top_order){
+    if(top_order){
+        return n->top_order;
+    }
+    return n->number;
+}
 
-void print_Graph_top_order(Valiant_DAG* g, string substring1, string substring2){
+void print_Graph(Valiant_DAG* g, string substring1, string substring2, bool top_order){
 	ofstream file;
-	file.open ("graphviz/graph.txt", std::ofstream::app);
+	file.open ("../graphviz/graph.txt", std::ofstream::app);
 	string str;
 	for(uint32_t i = 0; i < g->pole_number; ++i){
 		if(g->pole_array[i]->left){
 			if(g->pole_array[i]->left->is_pole){
 				if(g->pole_array[i]->is_left_in_subleft){
-					file << substring1 << "p" << g->pole_array[i]->top_order << " -> " << substring1 << "sl" << "p" << g->pole_array[i]->left->top_order << ";" << endl;
+					file << substring1 << "p" << getnum(g->pole_array[i], top_order) << " -> " << substring1 << "sl" << "p" << getnum(g->pole_array[i]->left, top_order) << ";" << endl;
 				}
 				else if(g->pole_array[i]->is_left_in_subright){
-					file << substring1 << "p" << g->pole_array[i]->top_order << " -> " << substring1 << "sr" << "p" << g->pole_array[i]->left->top_order << ";" << endl;
+					file << substring1 << "p" << getnum(g->pole_array[i], top_order) << " -> " << substring1 << "sr" << "p" << getnum(g->pole_array[i]->left, top_order) << ";" << endl;
 				}
 				else if(g->pole_array[i]->is_left_outer){
 					str = substring1.substr(substring1.size()-2,2);
 					substring1.erase(substring1.end()-2, substring1.end());
-					file << substring1 << str << "p" << g->pole_array[i]->top_order << " -> " << substring1 << "p" << g->pole_array[i]->left->top_order << ";" << endl;
+					file << substring1 << str << "p" << getnum(g->pole_array[i], top_order) << " -> " << substring1 << "p" << getnum(g->pole_array[i]->left, top_order) << ";" << endl;
 					substring1 += str;
 				}
 				else{
-					file << substring1 << "p" << g->pole_array[i]->top_order << " -> " << substring1 << "p" << g->pole_array[i]->left->top_order << ";" << endl;
+					file << substring1 << "p" << getnum(g->pole_array[i], top_order) << " -> " << substring1 << "p" << getnum(g->pole_array[i]->left, top_order) << ";" << endl;
 				}
 			}
 			else{
 				if(g->pole_array[i]->is_left_in_subleft){
-					file << substring1 << "p" << g->pole_array[i]->top_order << " -> " << substring1 << "sl" << "n" << g->pole_array[i]->left->top_order << ";" << endl;
+					file << substring1 << "p" << getnum(g->pole_array[i], top_order) << " -> " << substring1 << "sl" << "n" << getnum(g->pole_array[i]->left, top_order) << ";" << endl;
 				}
 				else if(g->pole_array[i]->is_left_in_subright){
-					file << substring1 << "p" << g->pole_array[i]->top_order << " -> " << substring1 << "sr" << "n" << g->pole_array[i]->left->top_order << ";" << endl;
+					file << substring1 << "p" << getnum(g->pole_array[i], top_order) << " -> " << substring1 << "sr" << "n" << getnum(g->pole_array[i]->left, top_order) << ";" << endl;
 				}
 				else if(g->pole_array[i]->is_left_outer){
 					str = substring1.substr(substring1.size()-2,2);
 					substring1.erase(substring1.end()-2, substring1.end());
-					file << substring1 << str << "p" << g->pole_array[i]->top_order << " -> " << substring1 << "n" << g->pole_array[i]->left->top_order << ";" << endl;
+					file << substring1 << str << "p" << getnum(g->pole_array[i], top_order) << " -> " << substring1 << "n" << getnum(g->pole_array[i]->left, top_order) << ";" << endl;
 					substring1 += str;
 				}
 				else{
-					file << substring1 << "p" << g->pole_array[i]->top_order << " -> " << substring1 << "n" << g->pole_array[i]->left->top_order << ";" << endl;
+					file << substring1 << "p" << getnum(g->pole_array[i], top_order) << " -> " << substring1 << "n" << getnum(g->pole_array[i]->left, top_order) << ";" << endl;
 				}
 			}
 		}
 		if(g->pole_array[i]->right){
 			if(g->pole_array[i]->right->is_pole){
 				if(g->pole_array[i]->is_right_in_subright){
-					file << substring2 << "p" << g->pole_array[i]->top_order << " -> " << substring2 << "sr" << "p" << g->pole_array[i]->right->top_order << ";" << endl;
+					file << substring2 << "p" << getnum(g->pole_array[i], top_order) << " -> " << substring2 << "sr" << "p" << getnum(g->pole_array[i]->right, top_order) << ";" << endl;
 				}
 				else if(g->pole_array[i]->is_right_in_subleft){
-					file << substring2 << "p" << g->pole_array[i]->top_order << " -> " << substring2 << "sl" << "p" << g->pole_array[i]->right->top_order << ";" << endl;
+					file << substring2 << "p" << getnum(g->pole_array[i], top_order) << " -> " << substring2 << "sl" << "p" << getnum(g->pole_array[i]->right, top_order) << ";" << endl;
 				}
 				else if(g->pole_array[i]->is_right_outer){
 					str = substring2.substr(substring2.size()-2,2);
 					substring2.erase(substring2.end()-2, substring2.end());
-					file << substring2 << str << "p" << g->pole_array[i]->top_order << " -> " << substring2 << "p" << g->pole_array[i]->right->top_order << ";" << endl;
+					file << substring2 << str << "p" << getnum(g->pole_array[i], top_order) << " -> " << substring2 << "p" << getnum(g->pole_array[i]->right, top_order) << ";" << endl;
 					substring2 += str;
 				}
 				else{
-					file << substring2 << "p" << g->pole_array[i]->top_order << " -> " << substring2 << "p" << g->pole_array[i]->right->top_order << ";" << endl;
+					file << substring2 << "p" << getnum(g->pole_array[i], top_order) << " -> " << substring2 << "p" << getnum(g->pole_array[i]->right, top_order) << ";" << endl;
 				}
 			}
 			else{
 				if(g->pole_array[i]->is_right_in_subright){
-					file << substring2 << "p" << g->pole_array[i]->top_order << " -> " << substring2 << "sr" << "n" << g->pole_array[i]->right->top_order << ";" << endl;
+					file << substring2 << "p" << getnum(g->pole_array[i], top_order) << " -> " << substring2 << "sr" << "n" << getnum(g->pole_array[i]->right, top_order) << ";" << endl;
 				}
 				else if(g->pole_array[i]->is_right_in_subleft){
-					file << substring2 << "p" << g->pole_array[i]->top_order << " -> " << substring2 << "sl" << "n" << g->pole_array[i]->right->top_order << ";" << endl;
+					file << substring2 << "p" << getnum(g->pole_array[i], top_order) << " -> " << substring2 << "sl" << "n" << getnum(g->pole_array[i]->right, top_order) << ";" << endl;
 				}
 				else if(g->pole_array[i]->is_right_outer){
 					str = substring2.substr(substring2.size()-2,2);
 					substring2.erase(substring2.end()-2, substring2.end());
-					file << substring2 << str << "p" << g->pole_array[i]->top_order << " -> " << substring2 << "n" << g->pole_array[i]->right->top_order << ";" << endl;
+					file << substring2 << str << "p" << getnum(g->pole_array[i], top_order) << " -> " << substring2 << "n" << getnum(g->pole_array[i]->right, top_order) << ";" << endl;
 					substring2 += str;
 				}
 				else{
-					file << substring2 << "p" << g->pole_array[i]->top_order << " -> " << substring2 << "n" << g->pole_array[i]->right->top_order << ";" << endl;
+					file << substring2 << "p" << getnum(g->pole_array[i], top_order) << " -> " << substring2 << "n" << getnum(g->pole_array[i]->right, top_order) << ";" << endl;
 				}
 			}
 		}
@@ -385,91 +204,90 @@ void print_Graph_top_order(Valiant_DAG* g, string substring1, string substring2)
 		if(g->node_array[i]->left){
 			if(g->node_array[i]->left->is_pole){
 				if(g->node_array[i]->is_left_in_subleft){
-					file << substring1 << "n" << g->node_array[i]->top_order << " -> " << substring1 << "sl" << "p" << g->node_array[i]->left->top_order << ";" << endl;
+					file << substring1 << "n" << getnum(g->node_array[i], top_order) << " -> " << substring1 << "sl" << "p" << getnum(g->node_array[i]->left, top_order) << ";" << endl;
 				}
 				else if(g->node_array[i]->is_left_in_subright){
-					file << substring1 << "n" << g->node_array[i]->top_order << " -> " << substring1 << "sr" << "p" << g->node_array[i]->left->top_order << ";" << endl;
+					file << substring1 << "n" << getnum(g->node_array[i], top_order) << " -> " << substring1 << "sr" << "p" << getnum(g->node_array[i]->left, top_order) << ";" << endl;
 				}
 				else if(g->node_array[i]->is_left_outer){
 					str = substring1.substr(substring1.size()-2,2);
 					substring1.erase(substring1.end()-2, substring1.end());
-					file << substring1 << str << "n" << g->node_array[i]->top_order << " -> " << substring1 << "p" << g->node_array[i]->left->top_order << ";" << endl;
+					file << substring1 << str << "n" << getnum(g->node_array[i], top_order) << " -> " << substring1 << "p" << getnum(g->node_array[i]->left, top_order) << ";" << endl;
 					substring1 += str;
 				}
 				else{
-					file << substring1 << "n" << g->node_array[i]->top_order << " -> " << substring1 << "p" << g->node_array[i]->left->top_order << ";" << endl;
+					file << substring1 << "n" << getnum(g->node_array[i], top_order) << " -> " << substring1 << "p" << getnum(g->node_array[i]->left, top_order) << ";" << endl;
 				}
 			}
 			else{
 				if(g->node_array[i]->is_left_in_subleft){
-					file << substring1 << "n" << g->node_array[i]->top_order << " -> " << substring1 << "sl" << "n" << g->node_array[i]->left->top_order << ";" << endl;
+					file << substring1 << "n" << getnum(g->node_array[i], top_order) << " -> " << substring1 << "sl" << "n" << getnum(g->node_array[i]->left, top_order) << ";" << endl;
 				}
 				else if(g->node_array[i]->is_left_in_subright){
-					file << substring1 << "n" << g->node_array[i]->top_order << " -> " << substring1 << "sr" << "n" << g->node_array[i]->left->top_order << ";" << endl;
+					file << substring1 << "n" << getnum(g->node_array[i], top_order) << " -> " << substring1 << "sr" << "n" << getnum(g->node_array[i]->left, top_order) << ";" << endl;
 				}
 				else if(g->node_array[i]->is_left_outer){
 					str = substring1.substr(substring1.size()-2,2);
 					substring1.erase(substring1.end()-2, substring1.end());
-					file << substring1 << str << "n" << g->node_array[i]->top_order << " -> " << substring1 << "n" << g->node_array[i]->left->top_order << ";" << endl;
+					file << substring1 << str << "n" << getnum(g->node_array[i], top_order) << " -> " << substring1 << "n" << getnum(g->node_array[i]->left, top_order) << ";" << endl;
 					substring1 += str;
 				}
 				else{
-					file << substring1 << "n" << g->node_array[i]->top_order << " -> " << substring1 << "n" << g->node_array[i]->left->top_order << ";" << endl;
+					file << substring1 << "n" << getnum(g->node_array[i], top_order) << " -> " << substring1 << "n" << getnum(g->node_array[i]->left, top_order) << ";" << endl;
 				}
 			}
 		}
 		if(g->node_array[i]->right){
 			if(g->node_array[i]->right->is_pole){
 				if(g->node_array[i]->is_right_in_subright){
-					file << substring2 << "n" << g->node_array[i]->top_order << " -> " << substring2 << "sr" << "p" << g->node_array[i]->right->top_order << ";" << endl;
+					file << substring2 << "n" << getnum(g->node_array[i], top_order) << " -> " << substring2 << "sr" << "p" << getnum(g->node_array[i]->right, top_order) << ";" << endl;
 				}
 				else if(g->node_array[i]->is_right_in_subleft){
-					file << substring2 << "n" << g->node_array[i]->top_order << " -> " << substring2 << "sl" << "p" << g->node_array[i]->right->top_order << ";" << endl;
+					file << substring2 << "n" << getnum(g->node_array[i], top_order) << " -> " << substring2 << "sl" << "p" << getnum(g->node_array[i]->right, top_order) << ";" << endl;
 				}
 				else if(g->node_array[i]->is_right_outer){
 					str = substring2.substr(substring2.size()-2,2);
 					substring2.erase(substring2.end()-2, substring2.end());
-					file << substring2 << str << "n" << g->node_array[i]->top_order << " -> " << substring2 << "p" << g->node_array[i]->right->top_order << ";" << endl;
+					file << substring2 << str << "n" << getnum(g->node_array[i], top_order) << " -> " << substring2 << "p" << getnum(g->node_array[i]->right, top_order) << ";" << endl;
 					substring2 += str;
 				}
 				else{
-					file << substring2 << "n" << g->node_array[i]->top_order << " -> " << substring2 << "p" << g->node_array[i]->right->top_order << ";" << endl;
+					file << substring2 << "n" << getnum(g->node_array[i], top_order) << " -> " << substring2 << "p" << getnum(g->node_array[i]->right, top_order) << ";" << endl;
 				}
 			}
 			else{
 				if(g->node_array[i]->is_right_in_subright){
-					file << substring2 << "n" << g->node_array[i]->top_order << " -> " << substring2 << "sr" << "n" << g->node_array[i]->right->top_order << ";" << endl;
+					file << substring2 << "n" << getnum(g->node_array[i], top_order) << " -> " << substring2 << "sr" << "n" << getnum(g->node_array[i]->right, top_order) << ";" << endl;
 				}
 				else if(g->node_array[i]->is_right_in_subleft){
-					file << substring2 << "n" << g->node_array[i]->top_order << " -> " << substring2 << "sl" << "n" << g->node_array[i]->right->top_order << ";" << endl;
+					file << substring2 << "n" << getnum(g->node_array[i], top_order) << " -> " << substring2 << "sl" << "n" << getnum(g->node_array[i]->right, top_order) << ";" << endl;
 				}
 				else if(g->node_array[i]->is_right_outer){
 					str = substring2.substr(substring2.size()-2,2);
 					substring2.erase(substring2.end()-2, substring2.end());
-					file << substring2 << str << "n" << g->node_array[i]->top_order << " -> " << substring2 << "n" << g->node_array[i]->right->top_order << ";" << endl;
+					file << substring2 << str << "n" << getnum(g->node_array[i], top_order) << " -> " << substring2 << "n" << getnum(g->node_array[i]->right, top_order) << ";" << endl;
 					substring2 += str;
 				}
 				else{
-					file << substring2 << "n" << g->node_array[i]->top_order << " -> " << substring2 << "n" << g->node_array[i]->right->top_order << ";" << endl;
+					file << substring2 << "n" << getnum(g->node_array[i], top_order) << " -> " << substring2 << "n" << getnum(g->node_array[i]->right, top_order) << ";" << endl;
 				}
 			}
 		}
 	}
 	if(g->sub_left){
 		substring1 += "sl";
-		print_Graph_top_order(g->sub_left, substring1, substring1);
+		print_Graph(g->sub_left, substring1, substring1, top_order);
 	}
 	if(g->sub_right){
 		substring2 += "sr";
-		print_Graph_top_order(g->sub_right, substring2, substring2);
+		print_Graph(g->sub_right, substring2, substring2, top_order);
 	}
 	file.close();
 }
 
-
 void print_labels_merged(Valiant_DAG* g, string substring1, string substring2, bool outest){
     ofstream file;
-	file.open ("graphviz/graph.txt", std::ofstream::app);
+	file.open ("../graphviz/graph.txt", std::ofstream::app);
 	string str;
 	file << endl;
 
@@ -525,7 +343,7 @@ void print_labels_merged(Valiant_DAG* g, string substring1, string substring2, b
 
 void print_Graph_merged(Valiant_DAG* g, string substring1, string substring2, bool outest){
 	ofstream file;
-	file.open ("graphviz/graph.txt", std::ofstream::app);
+	file.open ("../graphviz/graph.txt", std::ofstream::app);
 	string str;
 	file << endl;
 
@@ -802,20 +620,3 @@ void print_Graph_merged(Valiant_DAG* g, string substring1, string substring2, bo
 	file.close();
 }
 
-void print_Graph_full_merged_top_order(Valiant_DAG* g){
-	ofstream file;
-	file.open ("graphviz/graph.txt");
-	file << "digraph {" << endl;
-    file << "node [shape = circle, style = filled, fillcolor = white, width = 0.2];";
-	file.close();
-
-	string substring = "";
-	print_labels_merged(g, substring, substring, true);
-	substring = "";
-	print_Graph_merged(g, substring, substring, true);
-
-	file.open ("graphviz/graph.txt", std::ofstream::app);
-	file << "}" << endl;
-	file.close();
-}
-#endif // DEBUG_GRAPH
