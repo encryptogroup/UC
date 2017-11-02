@@ -2,7 +2,7 @@
 
 ### Implementation of Valiant's Universal Circuit Construction Optimized for Private Function Evaluation
 
-By *¡gnes Kiss and Thomas Schneider* ([ENCRYPTO](http://www.encrypto.de), TU Darmstadt)<br>in [Eurocrypt 2016](http://ist.ac.at/eurocrypt2016/). Paper available [here](http://encrypto.de/papers/KS16.pdf).
+By *√Ågnes Kiss and Thomas Schneider* ([ENCRYPTO](http://www.encrypto.de), TU Darmstadt)<br>in [Eurocrypt 2016](http://ist.ac.at/eurocrypt2016/). Paper available [here](http://encrypto.de/papers/KS16.pdf).
 
 ### Features
 ---
@@ -17,7 +17,7 @@ This code is provided as a experimental implementation for testing purposes and 
 
 Our UC compiler was developed in C/C++ and therefore requires [`g++`](https://packages.debian.org/testing/g++) using Linux.
 
-### ABY Sourcecode
+### UC Compiler Sourcecode
 ---
 
 #### File System Structure
@@ -25,14 +25,14 @@ Our UC compiler was developed in C/C++ and therefore requires [`g++`](https://pa
 * `/graphviz/`    - Graphviz files if graph debugging is enabled.
 * `/circuits/`    - Example circuit files.
 * `/src/`    - Source code.
- * `src/gamma/` - Souce of underlying graph of the circuit.
- * `src/uc/` - Souce of universal graph, its embedding and printing as universal circuit into file.
- * `src/util/` - Souce of functions that are used for debugging or reading from the SHDL file.
+ * `src/gamma/` - Source of underlying graph of the circuit.
+ * `src/uc/` - Source of universal graph, its embedding and printing as universal circuit into file.
+ * `src/util/` - Source of functions that are used for debugging or reading from the SHDL file.
 
 
 #### UC Compiler
 
-1. Clone a copy of the main ABY git repository and its submodules by running:
+1. Clone a copy of the main UC git repository and its submodules by running:
 	```
 	git clone --recursive git://github.com/encryptogroup/UC
 	```
@@ -67,3 +67,4 @@ g++ -o UC UC.cpp
 #### Private Function Evaluation
 
   * Our UC compiler is compatible with ABY that can evaluate the UC generated. The code for this will be available soon at the github page of [ABY](https://github.com/encryptogroup/ABY).
+  
