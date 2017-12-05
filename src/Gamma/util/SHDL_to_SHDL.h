@@ -39,7 +39,6 @@
 
 using namespace std;
 
-using namespace std;
 struct Node{
     uint32_t number;
     uint32_t remaining_fanout;
@@ -51,15 +50,17 @@ struct Node{
     Node* check_node(uint32_t);
     ~Node();
 };
-list<Node*> collection;
+//list<Node*> collection;
 Node* getnode(list<Node*>, uint32_t, uint32_t);
 
 void tokenize2(const std::string& str, std::vector<string>& tokens);
 void count_gate_num(string filename2, uint32_t& gate_num);
 void set_fanout(string filename2, vector<uint32_t>& fanout, uint32_t& output_num, uint32_t& inputs);
 void set_shift(vector<uint32_t>& shift, vector<uint32_t>& fanout, uint32_t inputs);
-void identify_problem_inputs(string filename2, vector<uint32_t>& fanout, uint32_t& inputs, uint32_t gate_num);
-void all_nodes(string filename2, uint32_t gate_num, vector<uint32_t> fanout, vector<uint32_t> shift, uint32_t inputs, uint32_t output_num);
+void identify_problem_inputs(string filename2, vector<uint32_t>& fanout, uint32_t& inputs, uint32_t gate_num,
+                             list<Node*> &collection);
+void all_nodes(string filename2, uint32_t gate_num, vector<uint32_t> fanout, vector<uint32_t> shift, uint32_t inputs,
+               uint32_t output_num, list<Node*> &collection);
 
 void SHDL_to_SHDL(string filename2);
 

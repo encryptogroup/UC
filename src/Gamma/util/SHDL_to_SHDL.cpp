@@ -26,6 +26,7 @@
 #include <stdint.h>
 
 #include "SHDL_to_SHDL.h"
+#include "../../config.h"
 
 /* Create node and its binary fanout tree, given the original fanout, k = num of node + shift[num] */
 /* num2 is needed, it has to change */
@@ -193,7 +194,8 @@ void set_shift(vector<uint32_t>& shift, vector<uint32_t>& fanout, uint32_t input
    }
 }
 
-void identify_problem_inputs(string filename2, vector<uint32_t>& fanout, uint32_t& inputs, uint32_t gate_num){
+void identify_problem_inputs(string filename2, vector<uint32_t>& fanout, uint32_t& inputs, uint32_t gate_num,
+                             list<Node*> &collection){
     string line;
     vector<string> tokens;
 
@@ -203,7 +205,7 @@ void identify_problem_inputs(string filename2, vector<uint32_t>& fanout, uint32_
     problem_inputs.reserve(gate_num);
 
     ofstream tofile;
-    string out_file_name = filename2 + "_Mod_SHDL.circuit";
+    string out_file_name = filename2 + SHDL_MOD_CIRCUIT_FILE_FORMAT;
     tofile.open(out_file_name.c_str());
 
     ifstream file;
@@ -237,7 +239,8 @@ void identify_problem_inputs(string filename2, vector<uint32_t>& fanout, uint32_
    problem_inputs.clear();
 }
 
-void all_nodes(string filename2, uint32_t gate_num, vector<uint32_t> fanout, vector<uint32_t> shift, uint32_t inputs, uint32_t output_num){
+void all_nodes(string filename2, uint32_t gate_num, vector<uint32_t> fanout, vector<uint32_t> shift, uint32_t inputs,
+               uint32_t output_num, list<Node*> &collection){
    ifstream file3;
    file3.open(filename2.c_str());
    bool outputs_written = false;
@@ -257,7 +260,7 @@ void all_nodes(string filename2, uint32_t gate_num, vector<uint32_t> fanout, vec
 
    Node* n;
 
-    string out_file_name = filename2 + "_Mod_SHDL.circuit";
+    string out_file_name = filename2 + SHDL_MOD_CIRCUIT_FILE_FORMAT;
     ofstream tofile;
     tofile.open(out_file_name.c_str(), fstream::app);
 
@@ -358,7 +361,8 @@ void all_nodes(string filename2, uint32_t gate_num, vector<uint32_t> fanout, vec
 }
 
 void SHDL_to_SHDL(string filename2){
-    string out_file_name = filename2 + "_Mod_SHDL.circuit";
+    list<Node*> collection;
+    string out_file_name = filename2 + SHDL_MOD_CIRCUIT_FILE_FORMAT;
     const char* out_file = out_file_name.c_str();
 
     uint32_t gate_num = 0;
@@ -383,29 +387,13 @@ void SHDL_to_SHDL(string filename2){
    cout << "3. Output SHDL file created: " << out_file << endl;
 
    /* Part dealing with input nodes */
-   identify_problem_inputs(filename2, fanout, inputs, gate_num);
+   identify_problem_inputs(filename2, fanout, inputs, gate_num, collection);
    cout << "4. Problematic inputs identified" << endl;
 
    /* Part dealing with the rest of the nodes */
    cout << "5. All other nodes done" << endl;
-   all_nodes(filename2, gate_num, fanout, shift, inputs, output_num);
+   all_nodes(filename2, gate_num, fanout, shift, inputs, output_num, collection);
 
    fanout.clear();
    shift.clear();
 }
-
-/*string filename[5] = {
-        // Bristol examples
-        "../circuits/adder_32bit.txt_SHDL.circuit",
-        "../circuits/comparator_32bit_signed_lt.txt_SHDL.circuit",
-        "../circuits/mult_32x32.txt_SHDL.circuit",
-        // Fairplay examples
-        "../circuits/MobileCode.circuit",
-        "../circuits/CreditChecking.circuit",
-   };
-*/
-
-/*int main(){
-    SHDL_to_SHDL(filename[0]);
-    return 0;
-}*/

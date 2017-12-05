@@ -33,10 +33,12 @@
 #include <algorithm>
 #include <stdint.h>
 
-#include "../uc/valiant.h"
+#include "../../config.h"
+#include "../../uc/2way/valiant.h"
 
 using namespace std;
 
+void print_Gamma1_simple(DAG_Gamma1* g);
 void print_Gamma2_simple(DAG_Gamma2* g);
 void print_gamma2(DAG_Gamma2* , string);
 void print_gamma2_full(DAG_Gamma2*);

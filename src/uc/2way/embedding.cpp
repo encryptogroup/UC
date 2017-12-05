@@ -19,10 +19,7 @@
 
 
 #include "valiant.h"
-#include "../util/print_graph.h"
-
-//#define DEBUG_OUTPUT
-#define STATE
+#include "../../Gamma/util/print_graph.h"
 
 /**
  * Embedding when node_number is 2
@@ -670,11 +667,12 @@ Valiant_DAG* embedding_merged(DAG_Gamma2* g, uint32_t u, uint32_t v){
   print_Gamma2_simple(g);
   #endif
 
+
   uint32_t node_num = g->node_number;
   DAG_Gamma2::Node* the_node = 0;
 
   // Create subgraphs for embedding
-  g->create_subgraphs(node_num * 2);
+  g->create_subgraphs(node_num * 2, false, false);
   g->check_correct_subgraphs();
   #ifdef DEBUG_GRAPH
   print_gamma2_full(g);

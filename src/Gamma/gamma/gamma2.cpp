@@ -185,7 +185,7 @@ DAG_Gamma2::Node* DAG_Gamma2::smallest_uncolored_with_child(){
  * Draw the edges of the two Gamma1 subgraphs of the Gamma2 graph
  * @param gamma1_graph the Gamma1 into which the edges have to be added based on the Gamma2 graph
  */
-void DAG_Gamma2::add_edges(DAG_Gamma1* gamma1_graph){
+void DAG_Gamma2::add_edges(DAG_Gamma1* gamma1_graph, bool preprocessing, bool four_way){
     DAG_Gamma1::Node* first = 0;
     DAG_Gamma1::Node* second = 0;
     for(uint32_t i = 0; i < gamma1_graph->node_number; i += 2){
@@ -197,13 +197,23 @@ void DAG_Gamma2::add_edges(DAG_Gamma1* gamma1_graph){
             #ifdef DEBUG_GAMMA2
             cout << "edge " << i/2 << "  " << (first->child->number - 1)/2-1 << endl;
             #endif
-            this->add_edge(this->node_array[i/2], this->node_array[(first->child->number - 1)/2-1]);
+            if(preprocessing && four_way){
+                this->add_edge(this->node_array[i/2], this->node_array[(first->child->number - 1)/2]);
+            }
+            else{
+                this->add_edge(this->node_array[i/2], this->node_array[(first->child->number - 1)/2-1]);
+            }
         }
         if(i + 1 < gamma1_graph->node_number && second && second->child && second->child != second){
             #ifdef DEBUG_GAMMA2
             cout << "edge2 " << i/2 << "  " << (second->child->number - 1)/2 -1 << endl;
             #endif
-            this->add_edge(this->node_array[i/2], this->node_array[(second->child->number - 1)/2 -1]);
+            if(preprocessing && four_way){
+                this->add_edge(this->node_array[i/2], this->node_array[(second->child->number - 1)/2]);
+            }
+            else{
+                this->add_edge(this->node_array[i/2], this->node_array[(second->child->number - 1)/2 -1]);
+            }
         }
     }
 }
@@ -212,7 +222,7 @@ void DAG_Gamma2::add_edges(DAG_Gamma1* gamma1_graph){
  * Create Gamma1 subgraphs of the Gamma2 graph
  * @param previous_node_num number of nodes in the previous graph
  */
-void DAG_Gamma2::create_subgraphs(uint32_t previous_node_num){
+void DAG_Gamma2::create_subgraphs(uint32_t previous_node_num, bool preprocessing, bool four_way){
     // Split the Gamma2 graph into two Gamma1s
     pair<DAG_Gamma1*, DAG_Gamma1*> p = create_from_Gamma2(this, previous_node_num);
     this->gamma1_right = p.first;
@@ -224,7 +234,7 @@ void DAG_Gamma2::create_subgraphs(uint32_t previous_node_num){
     uint32_t left_node_num = node_number/2;
     uint32_t right_node_num = node_number/2;
 
-    if(node_number <= 4){
+    if(node_number <= 4 && (preprocessing || ! four_way)){
         this->sub_left = 0;
         this->sub_right = 0;
         return;
@@ -241,18 +251,22 @@ void DAG_Gamma2::create_subgraphs(uint32_t previous_node_num){
         if(right_num % 2 == 0)
             right_node_num--;
     }
+    if(preprocessing && four_way){
+        left_node_num++;
+        right_node_num++;
+    }
 
     // Set the subgraphs accordingly
     this->sub_left = new DAG_Gamma2(left_node_num);
     this->sub_right = new DAG_Gamma2(right_node_num);
 
     // Add the edges to the Gamma1 subgraphs
-    this->sub_left->add_edges(this->gamma1_left);
-    this->sub_right->add_edges(this->gamma1_right);
+    this->sub_left->add_edges(this->gamma1_left, preprocessing, four_way);
+    this->sub_right->add_edges(this->gamma1_right, preprocessing, four_way);
 
     // Continue recursively
-    this->sub_left->create_subgraphs(left_num);
-    this->sub_right->create_subgraphs(right_num);
+    this->sub_left->create_subgraphs(left_num, !preprocessing, four_way);
+    this->sub_right->create_subgraphs(right_num, !preprocessing, four_way);
 }
 
 /**

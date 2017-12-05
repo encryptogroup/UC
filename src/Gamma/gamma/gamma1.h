@@ -31,6 +31,8 @@
 #include <vector>
 #include <algorithm>
 #include <stdint.h>
+
+#include "../../config.h"
 using namespace std;
 
 class DAG_Gamma1 {
@@ -46,6 +48,8 @@ class DAG_Gamma1 {
         Node* child;
         // Bool true if the node is an output
         bool is_output;
+
+        uint32_t numberFor4WaySplit;
 
         Node(uint32_t id);
 	Node(const Node&);

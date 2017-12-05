@@ -17,6 +17,8 @@
             with at most two incoming and at most two outgoing edge for each node.
  */
 
+#include "valiant.h"
+
 /**
  * Valiant_DAG::Node constructor
  * @param num the number identifying the node, everything else is set to false or null
@@ -77,49 +79,49 @@ void Valiant_DAG::Node::set_control_bit(Node* next, Node* previous){
 	// Previous node is not null
 	else{
         if(previous == this->left_parent && this->left == next){
-			if(this->is_set == false){
+			if(!this->is_set){
                 //0: stays
 				control_num = 0;
 				this->is_set = true;
 			}
 			// Set nothing, already set well
-			else if(this->is_set == true && control_num == 0) {}
+			else if(this->is_set && control_num == 0) {}
 			else{
                 cerr << "PROBLEM in node::set_control_bit: failed set_control_bit (already set to opposite)  " << this->number-1 << endl;
 			}
 		}
 		else if(previous == this->right_parent && this->right == next){
-			if(this->is_set == false){
+			if(!this->is_set){
                 //0: stays
 				control_num = 0;
 				this->is_set = true;
 			}
 			// Set nothing, already set well
-			else if(this->is_set == true && control_num == 0) {}
+			else if(this->is_set && control_num == 0) {}
 			else{
                 cerr << "PROBLEM in node::set_control_bit: failed set_control_bit (already set to opposite)  " << this->number-1 << endl;
 			}
 		}
 		else if(previous == this->left_parent && this->right == next){
-			if(this->is_set == false){
+			if(!this->is_set){
                 //1: switch
 				control_num = 1;
 				this->is_set = true;
 			}
 			// Set nothing, already set well
-			else if(this->is_set == true && control_num == 1) {}
+			else if(this->is_set && control_num == 1) {}
 			else{
 				cerr << "PROBLEM in node::set_control_bit: failed set_control_bit (already set to opposite)  " << this->number-1 << endl;
 			}
 		}
 		else if(previous == this->right_parent && this->left == next){
-			if(this->is_set == false){
+			if(!this->is_set){
                 //1: switch
 				control_num = 1;
 				this->is_set = true;
 			}
 			// Set nothing, already set well
-			else if(this->is_set == true && control_num == 1) {}
+			else if(this->is_set && control_num == 1) {}
 			else{
 				cerr << "PROBLEM in node::set_control_bit: failed set_control_bit (already set to opposite)  " << this->number-1 << endl;
 			}

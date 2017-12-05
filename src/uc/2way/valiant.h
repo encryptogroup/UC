@@ -38,6 +38,10 @@
 #include <string.h>
 #include <stdint.h>
 
+#include "../../config.h"
+#include "../../Gamma/gamma/gamma2.h"
+#include "../../Gamma/gamma/gamma1.h"
+
 using namespace std;
 
 /*-------------------------- Class Valiant_DAG ---------------------------------*/

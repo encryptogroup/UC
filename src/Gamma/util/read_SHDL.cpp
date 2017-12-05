@@ -358,6 +358,7 @@ void eval_SHDL(string filename, vector<bool>& input_list, vector<bool>& output_l
                     temp = (0 == (rand() % 2));
                     input_list.push_back(temp);
                     wires_carry.push_back(temp);
+                    cout << "input " << temp << endl;
                 }
                 // Count the number of outputs
                 else if(tokens[1] == "output"){
