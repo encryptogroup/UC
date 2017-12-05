@@ -31,6 +31,7 @@
 #include <vector>
 #include <algorithm>
 #include <stdint.h>
+#include "gamma1.h"
 using namespace std;
 
 class DAG_Gamma2 {
@@ -46,7 +47,7 @@ class DAG_Gamma2 {
         Node* left_parent;
         // Pointer to the second parent node
         Node* right_parent;
-        // True if the edge coming into the node are already colored
+        // True if the edges coming into the node are already colored
         bool colored;
         // True if the node corresponds to an output of the circuit
         bool output;
@@ -83,8 +84,8 @@ class DAG_Gamma2 {
 
    void add_edge(Node*, Node*);
    Node* smallest_uncolored_with_child();
-   void add_edges(DAG_Gamma1*);
-   void create_subgraphs(uint32_t);
+   void add_edges(DAG_Gamma1*, bool, bool);
+   void create_subgraphs(uint32_t, bool, bool);
    void check_one_subgraph(DAG_Gamma1* gamma1);
    void check_correct_subgraphs();
 

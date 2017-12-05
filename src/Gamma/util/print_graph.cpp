@@ -20,13 +20,28 @@
 
 //NOTE: NOT CHECKED, might have functions that do not work anymore
 //print_Graph_full_merged_top_order() function is the best to be used and it works!
-
 #include "print_graph.h"
+#ifdef DEBUG_GRAPH
+
+/** Print simple Gamma1 graph into gamma1.txt file */
+void print_Gamma1_simple(DAG_Gamma1* g){
+    ofstream file;
+    file.open ("graphviz/gamma1.txt");
+	file << "digraph{" << endl;
+
+    for (uint32_t i = 0; i < g->node_number; i++){
+        if(g->node_array[i]->child){
+            file << "m" << g->node_array[i]->number << " -> m" << g->node_array[i]->child->number << ";" << endl;
+        }
+    }
+    file << "}" << endl;
+	file.close();
+}
 
 /** Print simple Gamma2 graph into gamma2.txt file */
 void print_Gamma2_simple(DAG_Gamma2* g){
     ofstream file;
-    file.open ("../graphviz/gamma2.txt");
+    file.open ("graphviz/gamma2.txt");
 	file << "digraph{" << endl;
 
     for (uint32_t i = 0; i < g->node_number; i++){
@@ -44,7 +59,7 @@ void print_Gamma2_simple(DAG_Gamma2* g){
 /** Print Gamma2 supergraph into gamma2_super.txt file */
 void print_gamma2_full(DAG_Gamma2* g){
     ofstream file;
-	file.open ("../graphviz/gamma2_super.txt");
+	file.open ("graphviz/gamma2_super.txt");
 	file << "digraph {" << endl;
 	file.close();
 
@@ -59,7 +74,7 @@ void print_gamma2_full(DAG_Gamma2* g){
 /** Print Gamma2 supergraph into gamma2_super.txt file */
 void print_gamma2(DAG_Gamma2* g, string substring){
     ofstream file;
-	file.open ("../graphviz/gamma2_super.txt", std::ofstream::app);
+	file.open ("graphviz/gamma2_super.txt", std::ofstream::app);
 	for(uint32_t i = 0; i < g->node_number; i++){
         if(g->node_array[i]->left){
             file << substring << g->node_array[i]->number << " -> " << substring << g->node_array[i]->left->number;
@@ -90,7 +105,7 @@ void print_gamma2(DAG_Gamma2* g, string substring){
 /** Print the full Valiant graph */
 void print_Graph_full(Valiant_DAG* g, bool top_order, bool merged){
 	ofstream file;
-	file.open ("../graphviz/graph.txt");
+	file.open ("graphviz/graph.txt");
 	file << "digraph {" << endl;
 	if(merged){
         file << "node [shape = circle, style = filled, fillcolor = white, width = 0.2];";
@@ -384,10 +399,11 @@ void print_Graph_merged(Valiant_DAG* g, string substring1, string substring2, bo
 				}
 			}
 			/*Write out if it is the first or second input of the next node*/
-            if(g->pole_array[i]->left->left_parent && g->pole_array[i]->left->left_parent == g->pole_array[i])
-                file << "[label=\"1\"];" << endl;
-            else
-                file << "[label=\"2!!!\"];" << endl;
+            //if(g->pole_array[i]->left->left_parent && g->pole_array[i]->left->left_parent == g->pole_array[i])
+                //file << "[label=\"1\"];" << endl;
+            //else
+                //file << "[label=\"2!!!\"];" << endl;
+            file << ";" << endl;
 		}
 		if(g->pole_array[i]->right){
 			if(g->pole_array[i]->right->is_pole){
@@ -425,10 +441,11 @@ void print_Graph_merged(Valiant_DAG* g, string substring1, string substring2, bo
 				}
 			}
 			/*Write out if it is the first or second input of the next node*/
-			if(g->pole_array[i]->right->left_parent && g->pole_array[i]->right->left_parent == g->pole_array[i])
-                file << "[label=\"1!!!\"];" << endl;
-            else
-                file << "[label=\"2\"];" << endl;
+			//if(g->pole_array[i]->right->left_parent && g->pole_array[i]->right->left_parent == g->pole_array[i])
+            //    file << "[label=\"1!!!\"];" << endl;
+            //else
+            //    file << "[label=\"2\"];" << endl;
+            file << ";" << endl;
 		}
 
 
@@ -470,10 +487,11 @@ void print_Graph_merged(Valiant_DAG* g, string substring1, string substring2, bo
 				}
 			}
 			/*Write out if it is the first or second input of the next node*/
-            if(g->node_array[i]->left->left_parent && g->node_array[i]->left->left_parent == g->node_array[i])
+            /*if(g->node_array[i]->left->left_parent && g->node_array[i]->left->left_parent == g->node_array[i])
                 file << "[label=\"1\"];" << endl;
             else
-                file << "[label=\"2!!!\"];" << endl;
+                file << "[label=\"2!!!\"];" << endl;*/
+                file << ";" << endl;
 		}
 		if(g->node_array[i]->right){
 			if(g->node_array[i]->right->is_pole){
@@ -511,10 +529,11 @@ void print_Graph_merged(Valiant_DAG* g, string substring1, string substring2, bo
 				}
 			}
 			/*Write out if it is the first or second input of the next node*/
-			if(g->node_array[i]->right->left_parent && g->node_array[i]->right->left_parent == g->node_array[i])
+			/*if(g->node_array[i]->right->left_parent && g->node_array[i]->right->left_parent == g->node_array[i])
                 file << "[label=\"1!!!\"];" << endl;
             else
-                file << "[label=\"2\"];" << endl;
+                file << "[label=\"2\"];" << endl;*/
+                file << ";" << endl;
 		}
 	}
 	if(outest){
@@ -555,10 +574,11 @@ void print_Graph_merged(Valiant_DAG* g, string substring1, string substring2, bo
                     }
                 }
                 /*Write out if it is the first or second input of the next node*/
-                if(g->node_array_outest[i]->left->left_parent && g->node_array_outest[i]->left->left_parent == g->node_array_outest[i])
+                /*if(g->node_array_outest[i]->left->left_parent && g->node_array_outest[i]->left->left_parent == g->node_array_outest[i])
                     file << "[label=\"1\"];" << endl;
                 else
-                    file << "[label=\"2!!!\"];" << endl;
+                    file << "[label=\"2!!!\"];" << endl;*/
+                    file << ";" << endl;
             }
             if(g->node_array_outest[i]->right){
                 if(g->node_array_outest[i]->right->is_pole){
@@ -596,10 +616,11 @@ void print_Graph_merged(Valiant_DAG* g, string substring1, string substring2, bo
                     }
                 }
                 /*Write out if it is the first or second input of the next node*/
-                if(g->node_array_outest[i]->right->left_parent && g->node_array_outest[i]->right->left_parent == g->node_array_outest[i])
+                /*if(g->node_array_outest[i]->right->left_parent && g->node_array_outest[i]->right->left_parent == g->node_array_outest[i])
                     file << "[label=\"1!!!\"];" << endl;
                 else
-                    file << "[label=\"2\"];" << endl;
+                    file << "[label=\"2\"];" << endl;*/
+                    file << ";" << endl;
             }
         }
 	}
@@ -619,4 +640,5 @@ void print_Graph_merged(Valiant_DAG* g, string substring1, string substring2, bo
 	}
 	file.close();
 }
+#endif // DEBUG_GRAPH
 

@@ -15,104 +15,170 @@
 			along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-//#define DEBUG_EMBEDDING
-#define TIME
-#define STATE
-//#define DEBUG_GRAPH //HAS TO BE UNDEFINED WHEN MEASURING PERFORMANCE!!!
-#define DEBUG_CORRECTNESS
+#include <cstdint>
+#include <string>
+#include <iostream>
+#include <cstring>
 
-#include <stdint.h>
-#include <ctime>
+#include "config.h"
+#include "Gamma/util/SHDL_to_SHDL.h"
+#include "Gamma/util/read_SHDL.h"
+#include "Gamma/gamma/gamma2.h"
+#include "uc/2way/valiant.h"
+#include "uc/4way/ValiantUC.h"
+#include "debug.h"
+#include "Gamma/util/print_graph.h"
 
-#include "gamma/gamma1.cpp"
-#include "gamma/gamma2.cpp"
-
-#ifdef DEBUG_GRAPH
-#include "util/print_graph.cpp"
-#endif // DEBUG_GRAPH
-
-#include "util/read_SHDL.cpp"
-#include "util/SHDL_to_SHDL.cpp"
-
-#include "uc/valiant.cpp"
-#include "uc/node.cpp"
-#include "uc/embedding.cpp"
-#include "uc/print_circuit.cpp"
+using namespace std;
 
 inline clock_t getMilliSecs() {
-    return clock() / (CLOCKS_PER_SEC / 1000);
+  return clock() / (CLOCKS_PER_SEC / 1000);
 }
 
-int main(int argc, char * argv[]){
-  uint32_t input = 0;
-  uint32_t output = 0;
+int main(int argc, char *argv[]) {
 
-string SHDL2[5] = {
-        "../circuits/adder_32bit.txt_SHDL.circuit",
-        "../circuits/comparator_32bit_signed_lt.txt_SHDL.circuit",
-        "../circuits/mult_32x32.txt_SHDL.circuit",
+  if(argc == 1) {
+    cout << "Enter a Circuit File (e.g. adder_32bit)" << endl;
+    return 1;
+  }
 
-        "../circuits/MobileCode.circuit",
-        "../circuits/CreditChecking.circuit",
-   };
+  uint32_t i;
+  char *filename;
+  auto version = 4;
 
-string SHDL[5] = {
-        "../circuits/adder_32bit.txt_SHDL.circuit_Mod_SHDL.circuit",
-        "../circuits/comparator_32bit_signed_lt.txt_SHDL.circuit_Mod_SHDL.circuit",
-        "../circuits/mult_32x32.txt_SHDL.circuit_Mod_SHDL.circuit",
+  for (i = 1; i < argc; i++) {
+    string temp(argv[i]);
+    if (temp == "-version") {
+      if (i + 1 < argc) {
+        version = atoi(argv[i+1]);
+        i++;
+      }
+    } else {
+      filename = argv[i];
+    }
+  }
 
-        "../circuits/MobileCode.circuit_Mod_SHDL.circuit",
-        "../circuits/CreditChecking.circuit_Mod_SHDL.circuit",
-   };
+  if (version != 2 && version != 4) {
+    cout << "Only allow verion 2 and version 4" << endl;
+    return 1;
+  }
 
-  uint16_t i = 0;
+  cout << "Generating Universal Circuit with Valiant\'s " << version << "-way Split Construction" << endl;
+  cout << "Circuit:\t" << filename << endl << endl;
+
+  auto *shdl2 =
+      static_cast<char *>(malloc(strlen(filename) + strlen(SHDL_CIRCUIT_FILE_FORMAT) + strlen(CIRCUIT_DIRECTORY)));
+  strcpy(shdl2, CIRCUIT_DIRECTORY);
+  strcat(shdl2, filename);
+  strcat(shdl2, SHDL_CIRCUIT_FILE_FORMAT);
+
+  auto *shdl = static_cast<char *>(malloc(strlen(shdl2) + strlen(SHDL_MOD_CIRCUIT_FILE_FORMAT)));
+  strcpy(shdl, shdl2);
+  strcat(shdl, SHDL_MOD_CIRCUIT_FILE_FORMAT);
 
   cout << endl << "START SHDL" << endl;
-  SHDL_to_SHDL(SHDL2[i]);
+  SHDL_to_SHDL(shdl2);
   cout << "END SHDL" << endl;
 
   cout << endl << "START UC" << endl;
-  clock_t start = getMilliSecs();
-  const char* tmp = SHDL[i].c_str();
-  DAG_Gamma2* gg = read_SHDL(tmp, input, output);
-  #ifdef STATE
+
+  uint32_t input = 0;
+  uint32_t output = 0;
+  DAG_Gamma2 *gg = read_SHDL(shdl, input, output);
+
+#ifdef STATE
   cout << "1. Creating the Gamma2 graph with " << input << " inputs and " << output << " outputs is done" << endl;
-  #endif // STATE
-  clock_t time1 = getMilliSecs();
+#endif // STATE
 
-  Valiant_DAG* G = embedding_merged(gg, input, output);
-  clock_t time2 = getMilliSecs();
-  cout << "Embedding time: " << (time2 - time1) << "ms" << endl;
+#ifdef TIME
+  clock_t start = getMilliSecs();
+#endif // TIME
 
-  G->print_circuit(input, output, tmp);
-  clock_t time3 = getMilliSecs();
-  cout << "I/O time: " << (time3 - time2) + (time1 - start) << "ms" << endl;
+  if (version == 2) {
+    Valiant_DAG* G = embedding_merged(gg, input, output);
+
+#ifdef TIME
+    clock_t time2 = getMilliSecs();
+    cout << "Embedding time: " << (time2 - start) << "ms" << endl;
+#endif // TIME
+
+    G->print_circuit(input, output, shdl);
+
+#ifdef TIME
+    clock_t time3 = getMilliSecs();
+    cout << "I/O time: " << (time3 - time2) + (time2 - start) << "ms" << endl;
+#endif // TIME
+  } else {
+    auto n = gg->node_number;
+    auto *uc = new ValiantUC(n);
+    gg->create_subgraphs(2 * n, true, true);
+    gg->check_correct_subgraphs();
+    uc->start(gg, input, output, shdl);
+
+#ifdef TIME
+    clock_t time2 = getMilliSecs();
+    cout << "UC Construction Time: " << (time2 - start) << "ms" << endl;
+#endif // TIME
+
+#ifdef DEBUG_CORRECTNESS
+    if (validate_block_edge_embedding(uc)) {
+      cout << "Block Edge-Embedding passed!" << endl;
+    } else {
+      cout << "Block Edge-Embedding failed!" << endl;
+    }
+    if (validate_recursion_point_edge_embedding(uc, gg)) {
+      cout << "Edge-Embedding passed!" << endl;
+    } else {
+      cout << "Edge-Embedding failed!" << endl;
+    }
+#endif // DEBUG_CORRECTNESS
+  }
+
   cout << "END UC" << endl;
 
-  #ifdef DEBUG_CORRECTNESS
+#ifdef DEBUG_GRAPH
+  print_gamma2_full(gg);
+#endif // DEBUG_GRAPH
+
+#ifdef DEBUG_CORRECTNESS
   cout << endl << "Evaluation result of original SHDL file" << endl;
   vector<bool> input_list;
   vector<bool> output_list;
-  eval_SHDL(SHDL[i], input_list, output_list);
+  eval_SHDL(shdl, input_list, output_list);
 
-  for(uint32_t j = 0; j < output_list.size(); ++j){
-     cout << output_list[j] << " ";
+  for (auto &&j : output_list) {
+    cout << j << " ";
   }
   cout << endl << endl;
 
   cout << endl << "Evaluation result of UC files" << endl;
   vector<bool> output_list2;
   // Pre-defined input bits, output bits to-be-compared
-  eval_UC(SHDL[i], input_list, output_list2);
+  eval_UC(shdl, input_list, output_list2);
 
-  for(uint32_t j = 0; j < output_list2.size(); ++j){
-     cout << output_list2[j] << " ";
+  for (auto &&j : output_list2) {
+    cout << j << " ";
   }
   cout << endl;
-  #endif // DEBUG_CORRECTNESS
 
-  clearup(G);
-  gg->~DAG_Gamma2();
+  bool both_equal = true;
+  if(output_list2.size() == output_list.size()) {
+    for(i = 0; i < output_list.size(); i++) {
+      if(output_list2[i] != output_list[i]) {
+        both_equal = false;
+      }
+    }
+  } else {
+    both_equal = false;
+  }
+
+  if (both_equal) {
+    cout << "Correctness Check passed!" << endl;
+  } else {
+    cout << "Correction Check failed!" << endl;
+  }
+
+#endif // DEBUG_CORRECTNESS
+
   return 0;
 }
-

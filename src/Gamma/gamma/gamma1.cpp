@@ -28,7 +28,8 @@ DAG_Gamma1::Node::Node(uint32_t num)
   , is_embedded(false)
   , parent(0)
   , child(0)
-  , is_output(false) {
+  , is_output(false)
+  , numberFor4WaySplit (-1) {
 }
 
 DAG_Gamma1::Node::Node(const Node& other){
@@ -37,6 +38,7 @@ DAG_Gamma1::Node::Node(const Node& other){
     parent = new Node(*(other.parent));
     child = new Node(*(other.child));
     is_output = other.is_output;
+  numberFor4WaySplit = other.numberFor4WaySplit;
 }
 
 /**
