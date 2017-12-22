@@ -1,13 +1,14 @@
 # Universal Circuit (UC) Compiler
 
-### Implementation of Valiant's Universal Circuit Construction Optimized for Private Function Evaluation
+### Implementation of Valiant's Universal Circuit Constructions
 
-By *Ágnes Kiss and Thomas Schneider* ([ENCRYPTO](http://www.encrypto.de), TU Darmstadt)<br>in [Eurocrypt 2016](http://ist.ac.at/eurocrypt2016/). Paper available [here](http://encrypto.de/papers/KS16.pdf).
+By *Ágnes Kiss and Thomas Schneider* ([ENCRYPTO](http://www.encrypto.de), TU Darmstadt) in [Eurocrypt 2016](http://ist.ac.at/eurocrypt2016/). Paper available [here](http://encrypto.de/papers/KS16.pdf), and <br>
+by *Daniel Günther, Ágnes Kiss and Thomas Schneider* in [Asiacrypt 2017](https://asiacrypt.iacr.org/2017/). Paper available [here](http://encrypto.de/papers/GKS17.pdf).
 
 ### Features
 ---
 
-Our Universal Circuit Compiler implements the most efficient UC construction, originally proposed by Leslie G. Valiant in STOC'76. 
+Our Universal Circuit Compiler implements the most efficient UC constructions, originally proposed by Leslie G. Valiant in STOC'76, namely the 2-way and 4-way split UC constructions, that are based on a 2-way or 4-way recursive structure. 
 It accepts any Boolean circuit as input in SHDL format, provided that the gates have at most two incoming edges, and outputs the topology of the UC along with its programming bits corresponding to the circuit.
 
 This code is provided as a experimental implementation for testing purposes and should not be used in a productive environment. We cannot guarantee security and correctness.
@@ -15,29 +16,28 @@ This code is provided as a experimental implementation for testing purposes and 
 ### Requirements
 ---
 
-Our UC compiler was developed in C/C++ and therefore requires [`g++`](https://packages.debian.org/testing/g++) using Linux.
+Our UC compiler was developed in C/C++ and therefore requires [`g++`](https://packages.debian.org/testing/g++). It also requires [CMake](https://cmake.org) version at least 3.6.
 
 ### UC Compiler Sourcecode
 ---
 
 #### File System Structure
 
-* `/graphviz/`    - Graphviz files if graph debugging is enabled.
 * `/circuits/`    - Example circuit files.
+* `/graphviz/`    - Graphviz files if graph debugging is enabled.
+* `/output/circuits/`    - Output circuit files.
 * `/src/`    - Source code.
- * `src/gamma/` - Source of underlying graph of the circuit.
+ * `src/Gamma/` - Source of underlying graph of the circuit.
  * `src/uc/` - Source of universal graph, its embedding and printing as universal circuit into file.
- * `src/util/` - Source of functions that are used for debugging or reading from the SHDL file.
-
-
+  * `src/uc/2way` - Source of the 2-way split UC construction.
+  * `src/uc/4way` - Source of the 4-way split UC construction.
+  
 #### UC Compiler
 
 1. Clone a copy of the main UC git repository and its submodules by running:
 	```
 	git clone --recursive git://github.com/encryptogroup/UC
 	```
-
-2. Enter the Framework directory: `cd UC/src/`
 
 
 ### Examples
