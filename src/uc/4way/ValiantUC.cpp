@@ -149,14 +149,32 @@ void ValiantUC::setInputsAndOutputs(uint32_t inputs, uint32_t outputs) {
           tmp1 = 1 - referenceBit;
           tmp2 = referenceBit;
         }
-      } else if(leftGamma && leftParent && leftGamma->node_array[leftParent->number - 1] && leftGamma->node_array[leftParent->number - 1]->child
-          && leftGamma->node_array[leftParent->number - 1]->child->number != currentNode->number
-          ||
-          rightGamma && rightParent && rightGamma->node_array[rightParent->number - 1] && rightGamma->node_array[rightParent->number - 1]->child
-          && rightGamma->node_array[rightParent->number - 1]->child->number != currentNode->number) {
-        auto tmp = tmp2;
-        tmp2 = tmp1;
-        tmp1 = tmp;
+      } else if (rightGamma->node_array[rightParent->number - 1]->child) {
+        if (leftGamma && leftParent && leftGamma->node_array[leftParent->number - 1]
+            && (!leftGamma->node_array[leftParent->number - 1]->child || (
+                leftGamma->node_array[leftParent->number - 1]->child
+                    && leftGamma->node_array[leftParent->number - 1]->child->number != currentNode->number))
+            ||
+                rightGamma && rightParent && rightGamma->node_array[rightParent->number - 1]
+                    && (!rightGamma->node_array[rightParent->number - 1]->child ||
+                        rightGamma->node_array[rightParent->number - 1]->child->number != currentNode->number)) {
+          auto tmp = tmp2;
+          tmp2 = tmp1;
+          tmp1 = tmp;
+        }
+      } else {
+        if (leftGamma && leftParent && leftGamma->node_array[leftParent->number - 1]
+            && (!leftGamma->node_array[leftParent->number - 1]->child || (
+                leftGamma->node_array[leftParent->number - 1]->child
+                    && leftGamma->node_array[leftParent->number - 1]->child->number != currentNode->number))
+            ||
+                rightGamma && rightParent && rightGamma->node_array[rightParent->number - 1]
+                    && (!rightGamma->node_array[rightParent->number - 1]->child ||
+                        false)) {
+          auto tmp = tmp2;
+          tmp2 = tmp1;
+          tmp1 = tmp;
+        }
       }
     }
 
@@ -267,3 +285,5 @@ void ValiantUC::writeOnFile(string name) {
 }
 
 std::vector <UCNode*> ValiantUC::getTopOrderedNodes() { return this->topOrderedNodes; }
+
+std::vector<UCNode *> ValiantUC::getPoles() { return this->poles; }

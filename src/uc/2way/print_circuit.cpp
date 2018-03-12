@@ -63,6 +63,7 @@ void eval_UC(string filename, vector<bool>& input_list, vector<bool>& output_lis
     string line_xy;
     vector<string> tokens;
     vector<string> tokens_xy;
+    uint32_t counter = 0;
 
     if(file.is_open()){
         while (getline(file, line)) {
@@ -72,6 +73,7 @@ void eval_UC(string filename, vector<bool>& input_list, vector<bool>& output_lis
                 if(tokens[0] == "C"){
                     for(uint32_t j = 0; j < tokens.size()-1; ++j){
                         wires_carry.push_back(input_list[j]);
+                        counter++;
                     }
                 }
                 if(tokens[0] == "X"){
@@ -110,11 +112,14 @@ void eval_UC(string filename, vector<bool>& input_list, vector<bool>& output_lis
                     #ifdef CIRCUIT_DEBUG
                     cout << "U" << wires_carry[atoi(tokens[1].c_str())] << " " << wires_carry[atoi(tokens[2].c_str())] << "\t" << temp << endl;
                     #endif // CIRCUIT_DEBUG
+                    // cout << "gate " << counter << ": " << temp << endl;
+                    counter++;
                 }
                 if(tokens[0] == "O"){
                     for(uint32_t j = 1; j < tokens.size(); ++j){
                         output_list.push_back(wires_carry[atoi(tokens[j].c_str())]);
                     }
+                    counter++;
                 }
             }
         }
