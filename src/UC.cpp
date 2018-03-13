@@ -38,7 +38,7 @@ inline clock_t getMilliSecs() {
 int main(int argc, char *argv[]) {
 
   if(argc == 1) {
-    cout << "Enter a Circuit File (e.g. adder_32bit)" << endl;
+    cout << "Enter a Circuit File (e.g. adder_32bit.txt)" << endl;
     return 1;
   }
 
