@@ -17,4 +17,4 @@ file(GLOB UC2_SOURCE_FILES src/uc/2way/*.cpp src/uc/2way/*.h src/config.h)
 add_executable(UC src/UC.cpp ${UC2_SOURCE_FILES} ${UC4_SOURCE_FILES} src/debug.cpp src/debug.h)
 target_link_libraries(UC GAMMA_LIB)
 
-add_executable(bristol src/bristol_to_SHDL.cpp)
+add_executable(bristol src/bristol_to_SHDL.cpp src/config.h)

@@ -21,6 +21,7 @@
 
 #include <vector>
 #include "ValiantEUG.h"
+#include "../../Gamma/util/SHDL_to_SHDL.h"
 
 class ValiantUC {
  public:
@@ -36,6 +37,8 @@ class ValiantUC {
 
   void setInputsAndOutputs (uint32_t inputs, uint32_t outputs);
   void edgeEmbedding();
+
+  std::vector<UCNode*> getPoles ();
 
   void writeOnFile (string name);
 

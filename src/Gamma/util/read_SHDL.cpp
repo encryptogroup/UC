@@ -336,6 +336,7 @@ void eval_SHDL(string filename, vector<bool>& input_list, vector<bool>& output_l
     uint32_t input1;
     uint32_t input2;
     uint32_t c[4];
+    uint32_t counter = 0;
 
     bool temp;
     vector <bool> wires_carry;
@@ -354,11 +355,11 @@ void eval_SHDL(string filename, vector<bool>& input_list, vector<bool>& output_l
                 tokenize(line, tokens);
                 // Count the number of inputs and initialize a random bool list of inputs
                 if(tokens[1] == "input"){
-                    inputs++;
                     temp = (0 == (rand() % 2));
                     input_list.push_back(temp);
                     wires_carry.push_back(temp);
-                    cout << "input " << temp << endl;
+                    cout << "input " << counter <<": " << temp << endl;
+                    inputs++;
                 }
                 // Count the number of outputs
                 else if(tokens[1] == "output"){
@@ -380,6 +381,7 @@ void eval_SHDL(string filename, vector<bool>& input_list, vector<bool>& output_l
                     }
                     current = calculate(arity, input1, input2, function_number, wires_carry);
                     wires_carry.push_back(current);
+                    //cout << "gate " << counter << ": " << current << endl;
                 }
                 if(tokens[0] == "outputs"){
                     for(uint32_t j = 1; j < tokens.size(); ++j){
@@ -387,6 +389,7 @@ void eval_SHDL(string filename, vector<bool>& input_list, vector<bool>& output_l
                     }
                 }
             }
+            counter++;
         }
         file.close();
     }

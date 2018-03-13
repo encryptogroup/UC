@@ -73,30 +73,7 @@ bool validate_recursion_point_edge_embedding (ValiantUC *uc, DAG_Gamma2 *gg) {
 
     UCNode *lastNode = uc->getBlocks()[destBlock]->getPoles()[destBlockPosition];
     UCNode *nextNode = lastNode->getParents()[eugNum];
-    while (nextNode->getNodeType() != POLE) {
-      UCNode *tmpNode = nextNode;
-      NodeType type = nextNode->getNodeType();
-      if (type == X_SWITCH || (type == RECURSION_POINT && nextNode->getParents().size() == 2 && nextNode->getChildren().size() == 2)) {
-        if (nextNode->getControlBits()[0] == 0) {
-          if (nextNode->getChildren()[0] == lastNode) {
-            nextNode = nextNode->getParents()[0];
-          } else {
-            nextNode = nextNode->getParents()[1];
-          }
-        } else {
-          if (nextNode->getChildren()[0] == lastNode) {
-            nextNode = nextNode->getParents()[1];
-          } else {
-            nextNode = nextNode->getParents()[0];
-          }
-        }
-      } else if (type == Y_SWITCH || (type == RECURSION_POINT && nextNode->getChildren().size() == 1)) {
-        nextNode = nextNode->getParents()[nextNode->getControlBits()[0]];
-      } else if (type == I_SWITCH || type == REVERSE_Y_SWITCH || (type == RECURSION_POINT && nextNode->getParents().size() == 1)) {
-        nextNode = nextNode->getParents()[0];
-      }
-      lastNode = tmpNode;
-    }
+    nextNode = find_next_pole(lastNode, nextNode);
     int calculatedStartId = nextNode->getID();
     if(calculatedStartId != id) {
       std::cout << "should be " << id << " -> " << destId << "\tbut is: " << calculatedStartId << " -> " << destId << std::endl;
@@ -109,4 +86,33 @@ bool validate_recursion_point_edge_embedding (ValiantUC *uc, DAG_Gamma2 *gg) {
     return true;
   }
   return false;
+}
+
+UCNode* find_next_pole (UCNode *pole, UCNode *nextNode) {
+  UCNode *lastNode = pole;
+  while (nextNode->getNodeType() != POLE) {
+    UCNode *tmpNode = nextNode;
+    NodeType type = nextNode->getNodeType();
+    if (type == X_SWITCH || (type == RECURSION_POINT && nextNode->getParents().size() == 2 && nextNode->getChildren().size() == 2)) {
+      if (nextNode->getControlBits()[0] == 0) {
+        if (nextNode->getChildren()[0] == lastNode) {
+          nextNode = nextNode->getParents()[0];
+        } else {
+          nextNode = nextNode->getParents()[1];
+        }
+      } else {
+        if (nextNode->getChildren()[0] == lastNode) {
+          nextNode = nextNode->getParents()[1];
+        } else {
+          nextNode = nextNode->getParents()[0];
+        }
+      }
+    } else if (type == Y_SWITCH || (type == RECURSION_POINT && nextNode->getChildren().size() == 1)) {
+      nextNode = nextNode->getParents()[nextNode->getControlBits()[0]];
+    } else if (type == I_SWITCH || type == REVERSE_Y_SWITCH || (type == RECURSION_POINT && nextNode->getParents().size() == 1)) {
+      nextNode = nextNode->getParents()[0];
+    }
+    lastNode = tmpNode;
+  }
+  return nextNode;
 }

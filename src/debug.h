@@ -25,4 +25,6 @@ bool validate_block_edge_embedding(ValiantEUG* eug, int eugNumber, string path);
 
 bool validate_recursion_point_edge_embedding(ValiantUC *uc, DAG_Gamma2* gamma);
 bool validate_recursion_point_edge_embedding(DAG_Gamma1 *graph, ValiantEUG *uc, int eugNum);
+
+UCNode* find_next_pole (UCNode *pole, UCNode *nextNode);
 #endif //VALIANTUC_DEBUG_H
