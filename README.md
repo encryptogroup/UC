@@ -22,7 +22,6 @@ This code is provided as a experimental implementation for testing purposes and 
  * **make**
 * Optional: **[CMake](https://cmake.org)** to compile the code with an alternative compiler (e.g. if the make file does not work for you or if you want to compile it with Windows)
 
-
 ### UC Compiler Sourcecode
 ---
 
