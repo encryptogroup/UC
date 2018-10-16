@@ -53,6 +53,7 @@ git clone --recursive git://github.com/encryptogroup/UC
 ```
 cmake -DCMAKE_BUILD_TYPE=Release -G "CodeBlocks - MinGW"
 cmake --build ./ --target all -- -j 2
+make
 ```
 
 ### Examples
