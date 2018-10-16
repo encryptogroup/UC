@@ -69,7 +69,7 @@ make
 
   * If you are using the format of the circuits from [here](https://www.cs.bris.ac.uk/Research/CryptographySecurity/MPC/), you add your circuit under `/circuits/` (e.g. *adder_32bit.txt*) and set the name of your circuit, e.g., circuit_name, within bristol_to_SHDL.cpp and run:
 ```
-./Bristol adder32_bit.txt
+./bristol adder_32bit.txt
 ```
   * If you generated your circuit file using FairplayPF or you are done with the previous step, next the fanout-2 gates are eliminated and the UC and its programming are generated. For generating and testing the UC, run:
 ```
