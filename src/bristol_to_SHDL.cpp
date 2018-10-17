@@ -119,14 +119,9 @@ void DAG_fanin2::add_edge(DAG_fanin2::Node *n1, DAG_fanin2::Node *n2) {
   }
 }
 
-uint64_t read_Bristol_circuit(char* string_file, uint32_t &input_num_total, uint32_t &output_num) {
-  char *suffix = const_cast<char *>("_SHDL.circuit");
-  int len = strlen(string_file) + strlen(suffix);
-  char *out_file_name = static_cast<char *>(malloc(len));
-  strcpy(out_file_name, string_file);
-  strcat(out_file_name, suffix);
-  const char *out_file = out_file_name;
-  const char *filename = string_file;
+uint64_t read_Bristol_circuit(string filename, uint32_t &input_num_total, uint32_t &output_num) {
+  string suffix("_SHDL.circuit");
+  string out_file = filename + suffix;
   uint32_t input_num1;
   uint32_t input_num2;
   uint32_t wires_num;
@@ -137,7 +132,6 @@ uint64_t read_Bristol_circuit(char* string_file, uint32_t &input_num_total, uint
   file >> gate_num >> wires_num >> input_num1 >> input_num2 >> output_num;
   input_num_total = input_num1 + input_num2;
   vector<uint32_t> output_order(output_num);
-
   DAG_fanin2 *g = new DAG_fanin2(gate_num, input_num_total, output_num);
 
   string type;
@@ -281,13 +275,13 @@ int main(int argc, char *argv[]) {
   if (argc != 2) {
     cout << "Enter a circuit file (e.g. adder_32bit.txt)" << endl;
   } else {
-    char *bristol = argv[1];
-    char *filename = static_cast<char *>(malloc(strlen(bristol) + strlen(CIRCUIT_DIRECTORY)));
-    strcpy(filename, CIRCUIT_DIRECTORY);
-    strcat(filename, bristol);
+    string bristol(argv[1]);
+    string directory(CIRCUIT_DIRECTORY);
+    string filename = directory + bristol;
     uint32_t input_num_total;
     uint32_t output_num;
     cout << "run bristol with file " << filename << endl;
     read_Bristol_circuit(filename, input_num_total, output_num);
+    cout << "finished bristol" << endl;
   }
 }
