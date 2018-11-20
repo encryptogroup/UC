@@ -140,5 +140,5 @@ Y C D Z (A)
 
 ### Private Function Evaluation
 
-  * Our UC compiler is compatible with ABY that can evaluate the UC generated. The code for this will be available soon at the github page of [ABY](https://github.com/encryptogroup/ABY).
+  * Our UC compiler is compatible with ABY that can evaluate the UC generated. The code for this is available at the github page of [ABY](https://github.com/encryptogroup/ABY), under src/examples/uc_circuit.
   
