@@ -528,9 +528,7 @@ pair<DAG_Gamma1*, DAG_Gamma1*> create_from_Gamma2(DAG_Gamma2* g, uint32_t previo
         p.first = g1;
         p.second = g2;
     }
-
-	tmp1->~DAG_Gamma2();
-	tmp2->~DAG_Gamma2();
+	
 	delete tmp1;
 	delete tmp2;
 
