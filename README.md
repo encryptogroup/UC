@@ -5,7 +5,7 @@
 
 By *Ágnes Kiss and Thomas Schneider* ([ENCRYPTO](http://www.encrypto.de), TU Darmstadt) in [Eurocrypt 2016](http://ist.ac.at/eurocrypt2016/). Paper available [here](http://encrypto.de/papers/KS16.pdf), and <br>
 by *Daniel Günther, Ágnes Kiss and Thomas Schneider* in [Asiacrypt 2017](https://asiacrypt.iacr.org/2017/). Paper available [here](http://encrypto.de/papers/GKS17.pdf), and <br>
-by _Masaud Y. Alhassan, Daniel Günther, Ágnes Kiss and Thomas Schneider (in submission). EPrint Paper available [here](https://eprint.iacr.org/2019/348.pdf) 
+by *Masaud Y. Alhassan, Daniel Günther, Ágnes Kiss and Thomas Schneider* (in submission). EPrint Paper available [here](https://eprint.iacr.org/2019/348.pdf) 
 
 
 ### Features
