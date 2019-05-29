@@ -50,6 +50,8 @@ git clone --recursive git://github.com/encryptogroup/UC
 ```
 mkdir build && cd build
 cmake ..
+cd ..
+make
 ```
 Hint: Unfortunately we have a bug with CMake so that our UC compiler runs only with CMake Debug mode. We are actually working on this issue.
 
@@ -66,7 +68,7 @@ Hint: Unfortunately we have a bug with CMake so that our UC compiler runs only w
 
   * If you are using the format of the circuits from [here](https://www.cs.bris.ac.uk/Research/CryptographySecurity/MPC/), you add your circuit under `/circuits/` (e.g. *adder_32bit.txt*) and set the name of your circuit, e.g., circuit_name, within bristol_to_SHDL.cpp and run:
 ```
-./Bristol adder32_bit.txt
+./bristol adder_32bit.txt
 ```
   * If you generated your circuit file using FairplayPF or you are done with the previous step, next the fanout-2 gates are eliminated and the UC and its programming are generated. For generating and testing the UC, run:
 ```
@@ -91,8 +93,54 @@ Hint: Unfortunately we have a bug with CMake so that our UC compiler runs only w
  * **DEBUG_GRAPH** - outputs graphiviz files in the graphviz folder
  * **DEBUG_CORRECTNESS** - generates a random input and evaluates the original circuit and the UC with it. Afterwards, the results are compared.
 
+### Output
 
-#### Private Function Evaluation
+* The output of our UC compiler is composed of two files: a UC file appended with *_circ.txt* and a programming file with *_prog.txt*. These files contain the universal circuit and its programming, respectively.
 
-  * Our UC compiler is compatible with ABY that can evaluate the UC generated. The code for this is available at the Github page of [ABY](https://github.com/encryptogroup/ABY).
+* We use a compact universal circuit format which is composed of inputs, outputs, and 3 types of gates which we detail below. The input and output wires are at the beginning and the end of the UC files, recpectively.
+```
+C 0 1 2 3 ... N //Real input bits to the UC, i.e., x when the UC implements f(x).
+O A B C ... //Output wires in order.
+```
+* The three gate types and their interpretations are detailed below. The X and Y switching blocks are interpreted as 1 AND and 3 or 2 XOR gates, respectively. All these gates use one line of the programming file, i.e., one bit for the switches or a 4-bit value for the universal gate.
+```
+/* X switch with A and B input wires and F and G output wires. 
+Depending on the corresponding programming bit p (from programming file), 
+it outputs either A and B in order (if p=0) or switched (if p=1). */
+X A B F G (p)
+
+/* Standard implementation of an X switch. */
+XOR A B D //D = A XOR B
+AND D p E //E = D AND p
+XOR E A F //F = E XOR A
+XOR E B G //G = E XOR B
+```
+
+```
+/* Y switch with A and B input wires and F output wire. 
+Depending on the corresponding programming bit p (from programming file), 
+it outputs either A and B (if p=0 it outputs B, if p=1, it outputs A). */
+Y A B F (p)
+
+/* Standard implementation of a Y switch. */
+XOR A B D //D = A XOR B
+AND D p E //E = D AND p
+XOR E A F //F = E XOR A
+```
+
+```
+/* U universal gate with A and B input wires and Z output wire. 
+Depending on the corresponding 4 programming bits p1, p2, p3, p4 (from programming file), 
+it calculates the gate with the gate table p1, p2, p3, p4 with inputs A and B. */
+U A B Z (p1 p2 p3 p4)
+
+/* Implementation of a U gates based on Y gates. Note that here the programming bits of the Y gates are the inputs bits.*/
+Y p1 p2 C (B)
+Y p3 p4 D (B)
+Y C D Z (A)
+```
+
+### Private Function Evaluation
+
+  * Our UC compiler is compatible with ABY that can evaluate the UC generated. The code for this is available at the github page of [ABY](https://github.com/encryptogroup/ABY), under src/examples/uc_circuit.
   
