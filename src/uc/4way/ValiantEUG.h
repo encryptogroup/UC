@@ -25,31 +25,36 @@
 #include "NodeType.h"
 #include "../../Gamma/gamma/gamma2.h"
 #include "../../Gamma/gamma/gamma1.h"
+#include "../../Gamma/util/read_SHDL.h"
 
 class ValiantEUG {
  public:
-  ValiantEUG(const std::vector<UCNode*> &poles, int eugNum);
+  ValiantEUG(const std::vector<UCNode*> &poles, int eugNum, int k, bool zhao, std::vector<uint64_t>& hybrid_choice);
   ~ValiantEUG();
 
   ValiantEUG* goToChildrenUC(std::vector<uint32_t> recursionPositions);
 
   uint32_t getSize() const;
 
-  void edgeEmbedding(DAG_Gamma1 *graph, DAG_Gamma2 *graphG2);
+  void edgeEmbedding(DAG_Gamma1 *graph, DAG_Gamma2 *graphG2, const std::map<uint32_t, uint32_t> & mapping);
 
   std::vector<Block*> getBlocks();
   std::vector<ValiantEUG*> getChildren();
 
+  int getK() const;
+
  private:
   std::vector<Block*> blocks;
   std::vector<ValiantEUG*> children;
+
+  int k;
   int eugNum;
+  bool hybrid;
 
-  ValiantEUG(const std::vector<UCNode*> &poles, std::vector<uint32_t> recursionSteps, int eugNum);
-  void constructUC(const std::vector<UCNode*> &poles, std::vector<uint32_t> recursionSteps);
-  void edgeEmbedding (DAG_Gamma1 *graph);
+  ValiantEUG(const std::vector<UCNode*> &poles, std::vector<uint32_t> recursionSteps, int eugNum, int k, bool hybrid, bool zhao, std::vector<uint64_t>& hybrid_choice);
+  void edgeEmbedding (DAG_Gamma1 *graph, const std::map<uint32_t, uint32_t>& mapping);
 
-  void modifiedConstructedUC(const std::vector<UCNode *> &poles, std::vector<uint32_t> recursionSteps);
+  void constructUC(const std::vector<UCNode *> &poles, std::vector<uint32_t> recursionSteps, bool zhao, std::vector<uint64_t>& hybrid_choice);
 };
 
 #endif //VALIANTUC4WAYSPLIT_VALIANTEUG_H

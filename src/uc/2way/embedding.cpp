@@ -671,8 +671,9 @@ Valiant_DAG* embedding_merged(DAG_Gamma2* g, uint32_t u, uint32_t v){
   uint32_t node_num = g->node_number;
   DAG_Gamma2::Node* the_node = 0;
 
+  std::vector<uint64_t> hybrid_choice;
   // Create subgraphs for embedding
-  g->create_subgraphs(node_num * 2, false, false);
+  g->create_subgraphs(node_num * 2, false, false, false, hybrid_choice);
   g->check_correct_subgraphs();
   #ifdef DEBUG_GRAPH
   print_gamma2_full(g);

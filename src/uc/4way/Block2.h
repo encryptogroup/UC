@@ -1,5 +1,5 @@
 /**
- \file 		debug.cpp
+ \file 		Block2.h
  \author 	guenther@rangar.de
  \copyright	Valiant's Universal Circuit Construction Optimized for Private Function Evaluation
 			Copyright (C) 2016 Engineering Cryptographic Protocols Group, TU Darmstadt
@@ -13,18 +13,32 @@
 			GNU Affero General Public License for more details.
 			You should have received a copy of the GNU Affero General Public License
 			along with this program. If not, see <http://www.gnu.org/licenses/>.
- \brief     Header of debug functions of Valiant's 4-way split UC Construction
+ \brief		Header of the Block2 class part of Valiant's 4-way Split Construction.
  */
 
-#ifndef VALIANTUC_DEBUG_H
-#define VALIANTUC_DEBUG_H
 
-#include "uc/4way/ValiantUC.h"
-bool validate_block_edge_embedding(ValiantUC* uc);
-bool validate_block_edge_embedding(ValiantEUG* eug, int eugNumber, string path);
+#ifndef VALIANTUC_BLOCK2_H
+#define VALIANTUC_BLOCK2_H
 
-bool validate_recursion_point_edge_embedding(ValiantUC *uc, DAG_Gamma2* gamma, int k, std::vector<uint64_t>& hybrid_choice);
-bool validate_recursion_point_edge_embedding(DAG_Gamma1 *graph, ValiantEUG *uc, int eugNum, int k);
+#include <vector>
+#include <map>
+#include <stdint.h>
+#include <algorithm>
+#include "UCNode.h"
+#include "NodeType.h"
+#include "BlockType.h"
+#include "Block.h"
 
-UCNode* find_next_pole (UCNode *pole, UCNode *nextNode);
-#endif //VALIANTUC_DEBUG_H
+class Block2 : public Block {
+ public:
+  Block2(std::vector<UCNode*> poles, uint32_t poleIndex, std::vector<uint32_t> recursionSteps, uint32_t position,
+         BlockType blockType, std::vector<std::vector<UCNode*>> recursionPoints);
+  ~Block2();
+
+  void edgeEmbedding(const std::map<uint32_t, uint32_t>& mapping) override;
+  void printEmbedding() override;
+  bool validateEdgeEmbedding(int eugNumber) override;
+
+};
+
+#endif //VALIANTUC_BLOCK2_H

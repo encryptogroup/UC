@@ -56,6 +56,8 @@ class UCNode {
 
   uint32_t getInputWire (UCNode *child);
 
+  void swapBit();
+  void swapParentsProg ();
   void clearParents ();
   void clearChildren ();
   void removeParent (UCNode *parent);

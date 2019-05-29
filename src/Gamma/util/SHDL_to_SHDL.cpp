@@ -28,8 +28,13 @@
 #include "SHDL_to_SHDL.h"
 #include "../../config.h"
 
-/* Create node and its binary fanout tree, given the original fanout, k = num of node + shift[num] */
-/* num2 is needed, it has to change */
+/**
+ * Create a node and its binary fanout tree
+ * @param num number of the node to create
+ * @param orig_fanout original fanout of the node
+ * @param num2 is needed, it has to change
+ * @param k number of nodes + shift[num]
+ */
 Node::Node(uint32_t num, uint32_t orig_fanout, uint32_t& num2, uint32_t k){
     number = num;
     parent = 0;
@@ -46,11 +51,20 @@ Node::Node(uint32_t num, uint32_t orig_fanout, uint32_t& num2, uint32_t k){
     }
 }
 
+/**
+ * Delete a Node
+ */
 Node::~Node(){
     delete left;
 }
 
-/* gives back node with number = num if add = 0, otherwise searches for num + add numbered node */
+/**
+ * Returns node with number = num if add = 0, otherwise searches for num + add numbered node
+ * @param coll list of nodes
+ * @param num number of the node to return
+ * @param add number of added nodes
+ * @return nodes under the given conditions
+ */
 Node* getnode(list<Node*> coll, uint32_t num, uint32_t add){
     Node* tmp;
     for (list<Node*>::iterator it = coll.begin(); it != coll.end(); ++it){
@@ -68,6 +82,11 @@ Node* getnode(list<Node*> coll, uint32_t num, uint32_t add){
     return 0;
 }
 
+/**
+ * Check if left node has the given number of seach int the children nodes
+ * @param num number
+ * @return node with the given number
+ */
 Node* Node::check_node(uint32_t num){
     Node* left_node = this->left;
     if(left_node && left_node->number == num){
@@ -80,6 +99,10 @@ Node* Node::check_node(uint32_t num){
     return 0;
 }
 
+/**
+ * Returns node with fanout
+ * @return node with fanout
+ */
 Node* Node::get_node_with_fanout(){
     Node* left_node = this->left;
     if(this && this->remaining_fanout > 0){
@@ -116,6 +139,11 @@ void tokenize2(const std::string& str, std::vector<string>& tokens){
 	}
 }
 
+/**
+ * Couns the number of gates in a given file
+ * @param filename2 file
+ * @param gate_num number of gates
+ */
 void count_gate_num(string filename2, uint32_t& gate_num){
     ifstream file2;
     file2.open(filename2.c_str());
@@ -126,6 +154,13 @@ void count_gate_num(string filename2, uint32_t& gate_num){
     file2.close();
 }
 
+/**
+ * sets the fanout for each node
+ * @param filename2 SHDL file
+ * @param fanout fanout for each node
+ * @param output_num number of outputs
+ * @param inputs number of inputs
+ */
 void set_fanout(string filename2, vector<uint32_t>& fanout, uint32_t& output_num, uint32_t& inputs){
     string line;
     vector<string> tokens;
@@ -177,6 +212,12 @@ void set_fanout(string filename2, vector<uint32_t>& fanout, uint32_t& output_num
     }
 }
 
+/**
+ * setts the shifts for each node
+ * @param shift list of shifts
+ * @param fanout list of fanouts
+ * @param inputs number of inputs
+ */
 void set_shift(vector<uint32_t>& shift, vector<uint32_t>& fanout, uint32_t inputs){
    uint32_t shift_global = 0;
    uint32_t tmp;
@@ -194,6 +235,14 @@ void set_shift(vector<uint32_t>& shift, vector<uint32_t>& fanout, uint32_t input
    }
 }
 
+/**
+ * Identify all inputs with fanout > 2
+ * @param filename2 SHDL file
+ * @param fanout fanout of the nodes
+ * @param inputs number of inputs
+ * @param gate_num number of gates
+ * @param collection list of all nodes
+ */
 void identify_problem_inputs(string filename2, vector<uint32_t>& fanout, uint32_t& inputs, uint32_t gate_num,
                              list<Node*> &collection){
     string line;
@@ -239,6 +288,16 @@ void identify_problem_inputs(string filename2, vector<uint32_t>& fanout, uint32_
    problem_inputs.clear();
 }
 
+/**
+ * write out all nodes in the file
+ * @param filename2 file of the original file
+ * @param gate_num number of gates
+ * @param fanout fanout of the nodes
+ * @param shift shifted numbers of each node
+ * @param inputs number of inputs
+ * @param output_num number of outputs
+ * @param collection list of nodes
+ */
 void all_nodes(string filename2, uint32_t gate_num, vector<uint32_t> fanout, vector<uint32_t> shift, uint32_t inputs,
                uint32_t output_num, list<Node*> &collection){
    ifstream file3;
@@ -360,6 +419,10 @@ void all_nodes(string filename2, uint32_t gate_num, vector<uint32_t> fanout, vec
 
 }
 
+/**
+ * Converts SHDL to a modified SHDL file where each node has at most 2 outputs
+ * @param filename2 filename of the original SHDL file
+ */
 void SHDL_to_SHDL(string filename2){
     list<Node*> collection;
     string out_file_name = filename2 + SHDL_MOD_CIRCUIT_FILE_FORMAT;

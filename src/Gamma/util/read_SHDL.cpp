@@ -381,7 +381,6 @@ void eval_SHDL(string filename, vector<bool>& input_list, vector<bool>& output_l
                     }
                     current = calculate(arity, input1, input2, function_number, wires_carry);
                     wires_carry.push_back(current);
-                    //cout << "gate " << counter << ": " << current << endl;
                 }
                 if(tokens[0] == "outputs"){
                     for(uint32_t j = 1; j < tokens.size(); ++j){

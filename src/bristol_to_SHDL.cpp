@@ -61,7 +61,11 @@ class DAG_fanin2 {
 
 uint64_t read_Bristol_circuit(string string_file, uint32_t &input_num_total, uint32_t &output_num);
 
-/* node construction with specified number, by default it has no children and parents, is not colored */
+/**
+ * node construction with specified number, by default it has no children and parents, is not colored
+ * @param number of the node
+ * @param typ type of the node
+ */
 DAG_fanin2::Node::Node(uint32_t num, uint32_t typ)
     : number(num),
       number2(num),
@@ -71,7 +75,12 @@ DAG_fanin2::Node::Node(uint32_t num, uint32_t typ)
     ,
       output(false) {}
 
-/* gamma2 instance with n nodes */
+/**
+ * gamma2 instance with n nodes
+ * @param k number of gates
+ * @param u number of inputs
+ * @param v number of outputs
+ */
 DAG_fanin2::DAG_fanin2(uint32_t k, uint32_t u, uint32_t v) {
   this->gate_number = k;
   this->input_number = u;
@@ -86,6 +95,11 @@ DAG_fanin2::DAG_fanin2(uint32_t k, uint32_t u, uint32_t v) {
   }
 }
 
+/**
+ * find the node with the given number
+ * @param number number of the node
+ * @return node with the given number
+ */
 DAG_fanin2::Node *DAG_fanin2::find_node(uint32_t number) {
   Node *current;
   for (uint32_t i = 0; i < gate_number + input_number; ++i) {
@@ -98,6 +112,9 @@ DAG_fanin2::Node *DAG_fanin2::find_node(uint32_t number) {
   return 0;
 }
 
+/**
+ * Deconstructor
+ */
 DAG_fanin2::~DAG_fanin2() {
   Node *current;
   for (uint32_t i = 0; i < gate_number + input_number; i++) {
@@ -107,7 +124,11 @@ DAG_fanin2::~DAG_fanin2() {
   }
 }
 
-/* add an edge between two nodes if valid */
+/**
+ * add an edge between two nodes if valid
+ * @param n1 node 1
+ * @param n2 node 2
+ */
 void DAG_fanin2::add_edge(DAG_fanin2::Node *n1, DAG_fanin2::Node *n2) {
   n1->neighbours.push_back(n2);
   if (n2->left_parent == 0) {
@@ -119,14 +140,16 @@ void DAG_fanin2::add_edge(DAG_fanin2::Node *n1, DAG_fanin2::Node *n2) {
   }
 }
 
-uint64_t read_Bristol_circuit(char* string_file, uint32_t &input_num_total, uint32_t &output_num) {
-  char *suffix = const_cast<char *>("_SHDL.circuit");
-  int len = strlen(string_file) + strlen(suffix);
-  char *out_file_name = static_cast<char *>(malloc(len));
-  strcpy(out_file_name, string_file);
-  strcat(out_file_name, suffix);
-  const char *out_file = out_file_name;
-  const char *filename = string_file;
+/**
+ * read a bristol circuit and converts it into SHDL
+ * @param filename bristol circuit
+ * @param input_num_total number of inputs
+ * @param output_num number of outputs
+ * @return copy gates
+ */
+uint64_t read_Bristol_circuit(string filename, uint32_t &input_num_total, uint32_t &output_num) {
+  string suffix("_SHDL.circuit");
+  string out_file = filename + suffix;
   uint32_t input_num1;
   uint32_t input_num2;
   uint32_t wires_num;
@@ -137,7 +160,6 @@ uint64_t read_Bristol_circuit(char* string_file, uint32_t &input_num_total, uint
   file >> gate_num >> wires_num >> input_num1 >> input_num2 >> output_num;
   input_num_total = input_num1 + input_num2;
   vector<uint32_t> output_order(output_num);
-
   DAG_fanin2 *g = new DAG_fanin2(gate_num, input_num_total, output_num);
 
   string type;
@@ -281,13 +303,13 @@ int main(int argc, char *argv[]) {
   if (argc != 2) {
     cout << "Enter a circuit file (e.g. adder_32bit.txt)" << endl;
   } else {
-    char *bristol = argv[1];
-    char *filename = static_cast<char *>(malloc(strlen(bristol) + strlen(CIRCUIT_DIRECTORY)));
-    strcpy(filename, CIRCUIT_DIRECTORY);
-    strcat(filename, bristol);
+    string bristol(argv[1]);
+    string directory(CIRCUIT_DIRECTORY);
+    string filename = directory + bristol;
     uint32_t input_num_total;
     uint32_t output_num;
     cout << "run bristol with file " << filename << endl;
     read_Bristol_circuit(filename, input_num_total, output_num);
+    cout << "finished bristol" << endl;
   }
 }

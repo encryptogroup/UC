@@ -1,15 +1,18 @@
+
 # Universal Circuit (UC) Compiler
 
 ### Implementation of Valiant's Universal Circuit Constructions
 
 By *Ágnes Kiss and Thomas Schneider* ([ENCRYPTO](http://www.encrypto.de), TU Darmstadt) in [Eurocrypt 2016](http://ist.ac.at/eurocrypt2016/). Paper available [here](http://encrypto.de/papers/KS16.pdf), and <br>
-by *Daniel Günther, Ágnes Kiss and Thomas Schneider* in [Asiacrypt 2017](https://asiacrypt.iacr.org/2017/). Paper available [here](http://encrypto.de/papers/GKS17.pdf).
+by *Daniel Günther, Ágnes Kiss and Thomas Schneider* in [Asiacrypt 2017](https://asiacrypt.iacr.org/2017/). Paper available [here](http://encrypto.de/papers/GKS17.pdf), and <br>
+by _Masaud Y. Alhassan, Daniel Günther, Ágnes Kiss and Thomas Schneider (in submission). EPrint Paper available [here](https://eprint.iacr.org/2019/348.pdf) 
+
 
 ### Features
 ---
 
-Our Universal Circuit Compiler implements the most efficient UC constructions, originally proposed by Leslie G. Valiant in STOC'76, namely the 2-way and 4-way split UC constructions, that are based on a 2-way or 4-way recursive structure. 
-It accepts any Boolean circuit as input in SHDL format, provided that the gates have at most two incoming edges, and outputs the topology of the UC along with its programming bits corresponding to the circuit.
+Our Universal Circuit Compiler implements the most efficient UC constructions, originally proposed by Leslie G. Valiant in STOC'76, namely the 2-way and 4-way split UC constructions, that are based on a 2-way or 4-way recursive structure. We provide implementations for the original 4-way split UC by Valiant as well as the improved 4-way split UC by Zhao et al. (ePrint Paper available [here](https://eprint.iacr.org/2018/943.pdf)). Additionally we implement our hybrid UC construction that combines Valiant's 2-way and one of the two 4-way split constructions so that the smallest UC for each circuit size is achieved.
+Our UC compiler accepts any Boolean circuit as input in SHDL format, provided that the gates have at most two incoming edges, and outputs the topology of the UC along with its programming bits corresponding to the circuit.
 
 This code is provided as a experimental implementation for testing purposes and should not be used in a productive environment. We cannot guarantee security and correctness.
 
@@ -20,8 +23,7 @@ This code is provided as a experimental implementation for testing purposes and 
 * The following packages:
  * **g++**
  * **make**
-* Optional: **[CMake](https://cmake.org)** to compile the code with an alternative compiler (e.g. if the make file does not work for you or if you want to compile it with Windows)
-
+* **[CMake](https://cmake.org)**
 ### UC Compiler Sourcecode
 ---
 
@@ -44,16 +46,12 @@ This code is provided as a experimental implementation for testing purposes and 
 git clone --recursive git://github.com/encryptogroup/UC
 ```
 2.  Enter the UC directory: `cd UC`
-
-##### Compiling with make
-1.  Call `make` in the root directory to compile the whole code and generate the two executables **UC** and **bristol**
-
-##### Compiling with cmake
-1. Choose one of the compilers [here](https://cmake.org/cmake/help/v3.0/manual/cmake-generators.7.html) (e.g. *CodeBlocks - MinGW*) and run the following commands:
+3. Run the following commands to compile the code with CMake:
 ```
-cmake -DCMAKE_BUILD_TYPE=Release -G "CodeBlocks - MinGW"
-cmake --build ./ --target all -- -j 2
+mkdir build && cd build
+cmake ..
 ```
+Hint: Unfortunately we have a bug with CMake so that our UC compiler runs only with CMake Debug mode. We are actually working on this issue.
 
 ### Examples
 ---
@@ -78,20 +76,23 @@ cmake --build ./ --target all -- -j 2
   * You should get some debug output for you to verify the correctness of the computation.
    
 ##### UC Options
-* You can add the -version flag with values 2 or 4 to use the 2-way split construction or the 4-way split construction (as default we use the 4-way split construction if the flag isn't set):
+* If you run the UC as described above you will reach the best size that our implementation can achieve. Concretely, the UC is built with our hybrid construction using the 4-way Blocks of Zhao et al. <b>Other options should only be used for experiments!</b>
+* You can add the -version flag with values 0 (for hybrid), 2 or 4 to use the 2-way split construction or the 4-way split construction (as default we use the hybrid if the flag isn't set):
 ```
 ./UC -version 2 adder_32bit.txt_SHDL.circuit
 ```
+* You can add the -valiant flag if you want to use the original 4-way block of Valiant (in combination with the hybrid or the 4-way version)
+* You can add the -random flag with a numeric value <i>n</i> if you want to run a UC on random circuit of size <i>n</i>.
 
 * There can be some flags set or removed in src/config.h:
  * **TIME** - measures the time of the UC generation
  * **STATE** - outputs state information while generating the UC
- * **DEBUG_EMBEDDING** - outputs some information that is helpful for debugging the edge-embedding process
+ * **CIRCUIT_DEBUG** - outputs some information that is helpful for debugging the edge-embedding process
  * **DEBUG_GRAPH** - outputs graphiviz files in the graphviz folder
  * **DEBUG_CORRECTNESS** - generates a random input and evaluates the original circuit and the UC with it. Afterwards, the results are compared.
 
 
 #### Private Function Evaluation
 
-  * Our UC compiler is compatible with ABY that can evaluate the UC generated. The code for this will be available soon at the github page of [ABY](https://github.com/encryptogroup/ABY).
+  * Our UC compiler is compatible with ABY that can evaluate the UC generated. The code for this is available at the Github page of [ABY](https://github.com/encryptogroup/ABY).
   
