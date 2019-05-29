@@ -49,4 +49,7 @@ void print_Graph(Valiant_DAG*, string, string, bool top_order);
 void print_labels_merged(Valiant_DAG* g, string substring1, string substring2, bool outest);
 void print_Graph_merged(Valiant_DAG* g, string substring1, string substring2, bool outest);
 
+void print_gamma_tree (DAG_Gamma2*, bool, bool);
+void print_gamma_subtrees (DAG_Gamma2*, string, bool, bool);
+
 #endif // PRINT_GRAPH_H_INCLUDED

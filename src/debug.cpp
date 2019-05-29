@@ -18,9 +18,15 @@
 
 #include <cmath>
 #include "debug.h"
+#include "Gamma/util/hybrid_size.h"
 
 using namespace std;
 
+/**
+ * validates the block edge embedding for the whole UC
+ * @param uc uc to check
+ * @return true if all blocks are embedded correctly
+ */
 bool validate_block_edge_embedding(ValiantUC* uc) {
   ValiantEUG* eugs[] = {uc->left(), uc->right()};
   for (int j = 0; j < 2; j++) {
@@ -31,6 +37,13 @@ bool validate_block_edge_embedding(ValiantUC* uc) {
   return true;
 }
 
+/**
+ * validates the block edge-embedding of all blocks in a EUG
+ * @param eug current EUG
+ * @param eugNumber left or right EUG
+ * @param path path of th EUG
+ * @return true if all blocks in this EUG are embedded correctly
+ */
 bool validate_block_edge_embedding(ValiantEUG* eug, int eugNumber, string path) {
   // std::cout << path << std::endl;
   for (int i = 0; i < eug->getBlocks().size(); i++) {
@@ -48,18 +61,37 @@ bool validate_block_edge_embedding(ValiantEUG* eug, int eugNumber, string path) 
   return true;
 }
 
-bool validate_recursion_point_edge_embedding (ValiantUC *uc, DAG_Gamma2 *gg) {
+/**
+ * validates if the rcursion points are embedded correctly (requires that block edge-embedding is correct)
+ * @param uc UC
+ * @param gg Gamma2 graph
+ * @param k k-way split
+ * @param hybrid_choice mapping between number of poles and next k
+ * @return true if recursion point edge-mebdding is correct
+ */
+bool validate_recursion_point_edge_embedding (ValiantUC *uc, DAG_Gamma2 *gg, int k, std::vector<uint64_t>& hybrid_choice) {
   ValiantEUG* eugs[] = {uc->left(), uc->right()};
   DAG_Gamma1* graphs[] = {gg->gamma1_left, gg->gamma1_right};
+  if (k == 0) {
+    k = nextK(gg->node_number, hybrid_choice);
+  }
   for (int i = 0; i < 2; i++) {
-    if(!validate_recursion_point_edge_embedding(graphs[i], eugs[i], i)) {
+    if(!validate_recursion_point_edge_embedding(graphs[i], eugs[i], i, k)) {
       return false;
     }
   }
   return true;
 }
 
- bool validate_recursion_point_edge_embedding (DAG_Gamma1 *graph, ValiantEUG *uc, int eugNum) {
+/**
+ * validats recursion point edge-embedding on a single EUG
+ * @param graph Gamma1 graph
+ * @param uc EUG
+ * @param eugNum left or right eug
+ * @param k k-way split
+ * @return true if recursion point edge-embedding is correct
+ */
+ bool validate_recursion_point_edge_embedding (DAG_Gamma1 *graph, ValiantEUG *uc, int eugNum, int k) {
   int wrongCounter = 0;
   for (int i = 0; i < graph->node_number; i++) {
     DAG_Gamma1::Node *currentNode = graph->node_array[i];
@@ -68,8 +100,8 @@ bool validate_recursion_point_edge_embedding (ValiantUC *uc, DAG_Gamma2 *gg) {
     DAG_Gamma1::Node *destNode = currentNode->child;
     if (!destNode) continue;
     int destId = destNode->number;
-    int destBlock = (int) floor(float((destId - 1) / 4));
-    int destBlockPosition = (destId - 1) % 4;
+    int destBlock = (int) floor(float((destId - 1) / k));
+    int destBlockPosition = (destId - 1) % k;
 
     UCNode *lastNode = uc->getBlocks()[destBlock]->getPoles()[destBlockPosition];
     UCNode *nextNode = lastNode->getParents()[eugNum];

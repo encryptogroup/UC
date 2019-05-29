@@ -32,6 +32,10 @@ DAG_Gamma1::Node::Node(uint32_t num)
   , numberFor4WaySplit (-1) {
 }
 
+/**
+ * Node constructer that takes the other node
+ * @param other other node
+ */
 DAG_Gamma1::Node::Node(const Node& other){
     number = other.number;
     is_embedded = other.is_embedded;
@@ -54,6 +58,10 @@ DAG_Gamma1::DAG_Gamma1(uint32_t num){
 	}
 }
 
+/**
+ * Gamma1 constructor that creates a gamma1 graph with the other gamma1 graph
+ * @param other other gamma1 graph
+ */
 DAG_Gamma1::DAG_Gamma1(const DAG_Gamma1& other){
     node_number = other.node_number;
     node_array = new Node*[node_number];

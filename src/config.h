@@ -19,11 +19,11 @@
 #ifndef VALIANTUC_CONFIG_H_H
 #define VALIANTUC_CONFIG_H_H
 
-#define TIME
-#define STATE
-//#define DEBUG_EMBEDDING
-#define DEBUG_GRAPH //HAS TO BE UNDEFINED WHEN MEASURING PERFORMANCE!!!
-#define DEBUG_CORRECTNESS
+#define TIME // measure time for building UC
+#define STATE // prints out the current state
+//#define CIRCUIT_DEBUG // prints out debug information of the circuit
+#define DEBUG_GRAPH //HAS TO BE UNDEFINED WHEN MEASURING PERFORMANCE!!! Prints out the graphvizz graphs
+#define DEBUG_CORRECTNESS // run some corrctness checks
 
 #define SHDL_CIRCUIT_FILE_FORMAT ("")
 #define SHDL_MOD_CIRCUIT_FILE_FORMAT ("_Mod_SHDL.circuit")

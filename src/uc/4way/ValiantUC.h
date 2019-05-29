@@ -20,23 +20,24 @@
 #define VALIANTUC4WAYSPLIT_VALIANTUC_H
 
 #include <vector>
+#include <math.h>
 #include "ValiantEUG.h"
 #include "../../Gamma/util/SHDL_to_SHDL.h"
 
 class ValiantUC {
  public:
-  ValiantUC(uint32_t nodeNum);
+  ValiantUC(uint32_t nodeNum, int k, bool zhao, std::vector<uint64_t>& hybrid_choice);
 
   ValiantEUG* left ();
   ValiantEUG* right();
 
-  void start(DAG_Gamma2 *graph, uint32_t inputs, uint32_t outputs, string name);
+  void start(DAG_Gamma2 *graph, uint32_t inputs, uint32_t outputs, string name, bool zhao);
 
   void setGamma2 (DAG_Gamma2* dag);
   uint32_t getSize();
 
-  void setInputsAndOutputs (uint32_t inputs, uint32_t outputs);
-  void edgeEmbedding();
+  void setInputsAndOutputs (uint32_t inputs, uint32_t outputs, bool zhao);
+  void edgeEmbedding(const std::map<uint32_t, uint32_t>& mapping);
 
   std::vector<UCNode*> getPoles ();
 

@@ -19,7 +19,7 @@
 #include <iostream>
 #include "UCNode.h"
 
-/*
+/**
  * Construct a UCNode
  * @param id id of the node
  * @param type node type
@@ -37,28 +37,30 @@ UCNode::UCNode(const uint32_t id, const NodeType type) {
   }
 }
 
-// Deconstructor
+/**
+ * Deconstruct a UCNode
+ */
 UCNode::~UCNode() {}
 
-/*
+/**
  * get the node's id
  * @return id
  */
 uint32_t UCNode::getID() const { return this->id; }
 
-/*
+/**
  * get the node's type
  * @return type
  */
 NodeType UCNode::getNodeType() const { return this->type; }
 
-/*
+/**
  * set the node's type
  * @param type type
  */
 void UCNode::setNodeType(NodeType type) { this->type = type; }
 
-/*
+/**
  * add a child to the node
  * @param child child
  */
@@ -66,7 +68,7 @@ void UCNode::addChild(UCNode *child) {
   this->children.emplace_back(child);
 }
 
-/*
+/**
  * add a parent to the node
  * @param parent
  */
@@ -74,7 +76,7 @@ void UCNode::addParent(UCNode *parent) {
   this->parents.emplace_back(parent);
 }
 
-/*
+/**
  * get the node's children
  * @return children
  */
@@ -82,7 +84,7 @@ std::vector<UCNode*>& UCNode::getChildren() {
   return this->children;
 }
 
-/*
+/**
  * get the node's parents
  * @return parents
  */
@@ -90,13 +92,13 @@ std::vector<UCNode*>& UCNode::getParents() {
   return this->parents;
 }
 
-/*
+/**
  * get the control bits of the node
  * @return control bits
  */
 std::vector<unsigned int> UCNode::getControlBits() { return this->controlBits; }
 
-/*
+/**
  * set the pole type of the node
  * @param poleType pole type
  */
@@ -104,13 +106,13 @@ void UCNode::setPoleType(PoleType poleType) {
   this->poleType = poleType;
 }
 
-/*
+/**
  * get the pole type of the node
  * @return pole type
  */
 PoleType UCNode::getPoleType() const { return this->poleType; }
 
-/*
+/**
  * set the control bits of the node
  * @param control bits
  */
@@ -119,7 +121,7 @@ void UCNode::setControlBits(std::vector<unsigned int> controlBits) {
   this->controlBits = controlBits;
 }
 
-/*
+/**
  * set one control bit of the node
  * @param control bit
  */
@@ -128,7 +130,7 @@ void UCNode::setControlBit(unsigned int controlBit) {
   this->controlBits.emplace_back(controlBit);
 }
 
-/*
+/**
  * mark the node as edge-embedded
  * @param true if the node was edge-embedded
  */
@@ -136,31 +138,52 @@ void UCNode::setEdgeEmbedded(bool edgeEmbedded) {
   this->edgeEmbedded = edgeEmbedded;
 }
 
-/*
+/**
  * set the topological number of the node
  * @param topNum topological number
  */
 void UCNode::setTopologicalNumber(uint32_t topNum) { this->topologicalNumber = topNum; }
 
-/*
+/**
  * get the topological visited information
  * @return true if the node was topological visited
  */
 bool UCNode::getTopologicalVisited() { return this->topologicalVisited; }
 
-/*
+/**
  * mark the node as topological visited
  * @param tru if the node is topological visited
  */
 void UCNode::setTopologicalVisited(bool visited) { this->topologicalVisited = visited; }
 
-/*
+/**
  * set the number of additional wires due to the X and copy gates
  * @aram value number of additional wires
  */
 void UCNode::setNumberOfAdditionalWires(int value) { this->numberOfAdditionalWires = value; }
 
-/*
+/**
+ * swaps the control bit of the node
+ */
+void UCNode::swapBit(){
+	if(this->getControlBits().size() != 0){
+		this->setControlBit(this->getControlBits()[0] ^ 1);
+	}
+	else{
+		cerr << "There is no programming to swap" << endl;
+	}
+}
+
+/**
+ * swap program bit (only one!) of all parents of the node
+ */
+void UCNode::swapParentsProg() {
+  for (auto parent : this->parents) {
+    parent->swapBit();
+  }
+}
+
+/**
  * remove all parents of the node
  */
 void UCNode::clearParents() {
@@ -170,7 +193,7 @@ void UCNode::clearParents() {
   this->parents.clear();
 }
 
-/*
+/**
  * remove all children of the node
  */
 void UCNode::clearChildren() {
@@ -180,7 +203,7 @@ void UCNode::clearChildren() {
   this->children.clear();
 }
 
-/*
+/**
  * remove a pecific parent of the node
  * @param parent
  */
@@ -201,7 +224,7 @@ void UCNode::removeParent(UCNode *parent) {
   }
 }
 
-/*
+/**
  * remove a specific child of the node
  * @param child child
  */
@@ -226,8 +249,9 @@ void UCNode::removeChild(UCNode *child) {
   }
 }
 
-/*
+/**
  * get the input wire of the node depending on the child
+ * @param child considered child of the node
  * @return input wire
  */
 uint32_t UCNode::getInputWire(UCNode *child) {
@@ -244,13 +268,13 @@ uint32_t UCNode::getInputWire(UCNode *child) {
     return wire;
   }
   if (children[0]->getNodeType() == child->getNodeType() && children[0]->getPoleType() == child->getPoleType()
-      && children[0]->getID() == child->getID()) {
+      && children[0]->getID() == child->getID() && children[0]->getTopologicalNumber() == child->getTopologicalNumber()) {
     return wire;
   }
   return wire + 1;
 }
 
-/*
+/**
  * get the node desciption, i.e. the output of the circuit file related to this node
  */
 std::string UCNode::getNodeDescription() {
@@ -285,8 +309,9 @@ std::string UCNode::getNodeDescription() {
   return result;
 }
 
-/*
+/**
  * get the node's programming bit
+ * @param dag Gamma2 graph
  */
 std::string UCNode::getNodeProgramming(DAG_Gamma2 *dag) {
   if (poleType != OUTPUT) {
@@ -309,14 +334,10 @@ std::string UCNode::getNodeProgramming(DAG_Gamma2 *dag) {
       return std::to_string(0);
     }
   }
-  /*
-  for (int i = 0; i < left->node_number; i++) {
-    currentNode = left->node_array[i];
-    if (currentNode->child && currentNode->child->number == this->id) {
-      return std::to_string(1);
-    }
-  }
-  return std::to_string (0);*/
 }
 
+/**
+ * get the topological ordered number of the node
+ * @return topological ordered number of the node
+ */
 uint32_t UCNode::getTopologicalNumber() { return this->topologicalNumber; }

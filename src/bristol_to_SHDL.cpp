@@ -61,7 +61,11 @@ class DAG_fanin2 {
 
 uint64_t read_Bristol_circuit(string string_file, uint32_t &input_num_total, uint32_t &output_num);
 
-/* node construction with specified number, by default it has no children and parents, is not colored */
+/**
+ * node construction with specified number, by default it has no children and parents, is not colored
+ * @param number of the node
+ * @param typ type of the node
+ */
 DAG_fanin2::Node::Node(uint32_t num, uint32_t typ)
     : number(num),
       number2(num),
@@ -71,7 +75,12 @@ DAG_fanin2::Node::Node(uint32_t num, uint32_t typ)
     ,
       output(false) {}
 
-/* gamma2 instance with n nodes */
+/**
+ * gamma2 instance with n nodes
+ * @param k number of gates
+ * @param u number of inputs
+ * @param v number of outputs
+ */
 DAG_fanin2::DAG_fanin2(uint32_t k, uint32_t u, uint32_t v) {
   this->gate_number = k;
   this->input_number = u;
@@ -86,6 +95,11 @@ DAG_fanin2::DAG_fanin2(uint32_t k, uint32_t u, uint32_t v) {
   }
 }
 
+/**
+ * find the node with the given number
+ * @param number number of the node
+ * @return node with the given number
+ */
 DAG_fanin2::Node *DAG_fanin2::find_node(uint32_t number) {
   Node *current;
   for (uint32_t i = 0; i < gate_number + input_number; ++i) {
@@ -98,6 +112,9 @@ DAG_fanin2::Node *DAG_fanin2::find_node(uint32_t number) {
   return 0;
 }
 
+/**
+ * Deconstructor
+ */
 DAG_fanin2::~DAG_fanin2() {
   Node *current;
   for (uint32_t i = 0; i < gate_number + input_number; i++) {
@@ -107,7 +124,11 @@ DAG_fanin2::~DAG_fanin2() {
   }
 }
 
-/* add an edge between two nodes if valid */
+/**
+ * add an edge between two nodes if valid
+ * @param n1 node 1
+ * @param n2 node 2
+ */
 void DAG_fanin2::add_edge(DAG_fanin2::Node *n1, DAG_fanin2::Node *n2) {
   n1->neighbours.push_back(n2);
   if (n2->left_parent == 0) {
@@ -119,6 +140,13 @@ void DAG_fanin2::add_edge(DAG_fanin2::Node *n1, DAG_fanin2::Node *n2) {
   }
 }
 
+/**
+ * read a bristol circuit and converts it into SHDL
+ * @param filename bristol circuit
+ * @param input_num_total number of inputs
+ * @param output_num number of outputs
+ * @return copy gates
+ */
 uint64_t read_Bristol_circuit(string filename, uint32_t &input_num_total, uint32_t &output_num) {
   string suffix("_SHDL.circuit");
   string out_file = filename + suffix;
