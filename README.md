@@ -64,7 +64,7 @@ Hint: Unfortunately we have a bug with CMake so that our UC compiler runs only w
 
 #### Testing Circuits
 
-  * If you are using the format of the circuits from [here](https://www.cs.bris.ac.uk/Research/CryptographySecurity/MPC/), you add your circuit under `/circuits/` (e.g. *adder_32bit.txt*) and set the name of your circuit, e.g., circuit_name, within bristol_to_SHDL.cpp and run:
+  * If you are using the format of the circuits from [here](https://homes.esat.kuleuven.be/~nsmart/MPC/old-circuits.html), you add your circuit under `/circuits/` (e.g. *adder_32bit.txt*) and set the name of your circuit, e.g., circuit_name, within bristol_to_SHDL.cpp and run:
 ```
 ./bristol adder_32bit.txt
 ```
