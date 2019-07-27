@@ -59,7 +59,7 @@ Hint: Unfortunately we have a bug with CMake so that our UC compiler runs only w
 #### Included Example Circuits
 
   * Our UC compiler is compatible with SHDL format with gates with at most two inputs, i.e., any function generated with the [FairplayPF](http://thomaschneider.de/FairplayPF/) circuit compiler. Examples such as MobileCode and CreditChecking can be found under `/circuits/`.
-  * Our UC compiler is also compatible with the test circuits for basic function from [here](https://www.cs.bris.ac.uk/Research/CryptographySecurity/MPC/), having to use an additional conversion function that translates these to SHDL circuits.
+  * Our UC compiler is also compatible with the test circuits for basic function from [here](https://homes.esat.kuleuven.be/~nsmart/MPC/old-circuits.html), having to use an additional conversion function that translates these to SHDL circuits.
   * Further example applications will be added soon.
 
 #### Testing Circuits
