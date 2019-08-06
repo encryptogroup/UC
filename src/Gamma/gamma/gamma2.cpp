@@ -396,6 +396,7 @@ DAG_Gamma2 *random_init(uint32_t n) {
   uint32_t j;
 
   for (uint32_t i = 0; i < g->node_number; i++) {
+    g->node_array[i]->set_function_bits(0, 1, 1, 0);
     j = rand() % (g->node_number - i);
     if (!(g->node_array[i]->right) && !(g->node_array[i + j]->right_parent) && i != i + j) {
       g->add_edge(g->node_array[i], g->node_array[i + j]);
