@@ -534,6 +534,7 @@ pair<DAG_Gamma1 *, DAG_Gamma1 *> create_from_Gamma2(DAG_Gamma2 *g, uint32_t prev
   for (uint32_t i = 0; i < g->node_number; ++i) {
     current = g->node_array[i];
     // Add edges to the "bipartite" graph
+    // TODO: memory bug occurs in the next two lines
     current->left->prepare_bipartite(tmp1, tmp2, i, edge_num);
     current->right->prepare_bipartite(tmp1, tmp2, i, edge_num);
   }
