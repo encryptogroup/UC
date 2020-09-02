@@ -3,10 +3,10 @@
 
 ### Implementation of Valiant's Universal Circuit Constructions
 
-By *Ágnes Kiss and Thomas Schneider* ([ENCRYPTO](http://www.encrypto.de), TU Darmstadt) in [Eurocrypt 2016](http://ist.ac.at/eurocrypt2016/). Paper available [here](http://encrypto.de/papers/KS16.pdf), and <br>
-by *Daniel Günther, Ágnes Kiss and Thomas Schneider* in [Asiacrypt 2017](https://asiacrypt.iacr.org/2017/). Paper available [here](http://encrypto.de/papers/GKS17.pdf), and <br>
-by *Masaud Y. Alhassan, Daniel Günther, Ágnes Kiss and Thomas Schneider* (in submission). ePrint Paper available [here](https://eprint.iacr.org/2019/348.pdf) 
-
+Developed at the [ENCRYPTO](http://www.encrypto.de) group at the Technical University of Darmstadt based on the following papers:
+* *Ágnes Kiss and Thomas Schneider*: Valiant's Universal Circuit is Practical. In [Eurocrypt 2016](http://ist.ac.at/eurocrypt2016/). Paper available [here](http://encrypto.de/papers/KS16.pdf). 
+* *Daniel Günther, Ágnes Kiss and Thomas Schneider*: More Efficient Universal Circuit Constructions. In [Asiacrypt 2017](https://asiacrypt.iacr.org/2017/). Paper available [here](http://encrypto.de/papers/GKS17.pdf). 
+* *Masaud Y. Alhassan, Daniel Günther, Ágnes Kiss and Thomas Schneider*: Efficient and Scalable Universal Circuits. In Journal of Cryptology 2020 33(3). Paper available [here](https://encrypto.de/papers/AGKS20.pdf).
 
 ### Features
 ---
