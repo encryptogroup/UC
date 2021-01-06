@@ -75,9 +75,9 @@ bool DAG_Gamma2::Node::node_not_colored() {
 DAG_Gamma2::Node *DAG_Gamma2::Node::other_child_or_parent(DAG_Gamma2::Node *other_node,
                                                           DAG_Gamma2::Node *left_node,
                                                           DAG_Gamma2::Node *right_node) {
-  if (left_node == other_node && right_node->node_not_colored()) {
+  if (left_node && right_node && left_node == other_node && right_node->node_not_colored()) {
     return right_node;
-  } else if (right_node == other_node && left_node->node_not_colored()) {
+  } else if (left_node && right_node && right_node == other_node && left_node->node_not_colored()) {
     return left_node;
   }
   return 0;
@@ -534,9 +534,10 @@ pair<DAG_Gamma1 *, DAG_Gamma1 *> create_from_Gamma2(DAG_Gamma2 *g, uint32_t prev
   for (uint32_t i = 0; i < g->node_number; ++i) {
     current = g->node_array[i];
     // Add edges to the "bipartite" graph
-    // TODO: memory bug occurs in the next two lines
-    current->left->prepare_bipartite(tmp1, tmp2, i, edge_num);
-    current->right->prepare_bipartite(tmp1, tmp2, i, edge_num);
+	if (current->left)
+      current->left->prepare_bipartite(tmp1, tmp2, i, edge_num);
+	if (current->right)
+	  current->right->prepare_bipartite(tmp1, tmp2, i, edge_num);
   }
 
   DAG_Gamma1 *g1 = new DAG_Gamma1(g->node_number);
@@ -589,8 +590,8 @@ pair<DAG_Gamma1 *, DAG_Gamma1 *> create_from_Gamma2(DAG_Gamma2 *g, uint32_t prev
     p.second = g2;
   }
 
-  tmp1->~DAG_Gamma2();
-  tmp2->~DAG_Gamma2();
+  // tmp1->~DAG_Gamma2();
+  // tmp2->~DAG_Gamma2();
   delete tmp1;
   delete tmp2;
 
