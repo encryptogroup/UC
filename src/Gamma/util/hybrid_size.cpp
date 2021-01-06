@@ -25,7 +25,7 @@
  * @param zhao true, if the Zhao optimization is considered in the 4-way split construction
  */
 void Dynamic_Hybrid( std::vector<uint64_t>& hybrid_choice, uint32_t n, bool zhao ){
-	std::vector<uint64_t> valiant_hybrid(n, 0);
+	std::vector<uint64_t> valiant_hybrid(n+1, 0);
 
 	const uint32_t HEAD_2_s = 3;
 	const uint32_t BODY_2_1_s = 5;

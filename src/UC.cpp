@@ -47,7 +47,7 @@ int main(int argc, char *argv[]) {
   }
 
   uint32_t i;
-  char *filename;
+  string filename;
   auto version = 0;
   bool zhao = true;
   bool random = false;
@@ -95,13 +95,12 @@ int main(int argc, char *argv[]) {
   cout << "-way Split Construction" << endl;
   cout << "Circuit:\t" << filename << endl << endl;
 
-    auto *shdl2 =
-        static_cast<char *>(malloc(strlen(filename) + strlen(SHDL_CIRCUIT_FILE_FORMAT) + strlen(CIRCUIT_DIRECTORY)));
+    char shdl2[strlen(filename.c_str()) + strlen(SHDL_CIRCUIT_FILE_FORMAT) + strlen(CIRCUIT_DIRECTORY)];
     strcpy(shdl2, CIRCUIT_DIRECTORY);
-    strcat(shdl2, filename);
+    strcat(shdl2, filename.c_str());
     strcat(shdl2, SHDL_CIRCUIT_FILE_FORMAT);
 
-    auto *shdl = static_cast<char *>(malloc(strlen(shdl2) + strlen(SHDL_MOD_CIRCUIT_FILE_FORMAT)));
+    char shdl[strlen(shdl2) + strlen(SHDL_MOD_CIRCUIT_FILE_FORMAT)];
     strcpy(shdl, shdl2);
     strcat(shdl, SHDL_MOD_CIRCUIT_FILE_FORMAT);
 
