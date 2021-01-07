@@ -46,12 +46,11 @@ This code is provided as a experimental implementation for testing purposes and 
 git clone --recursive git://github.com/encryptogroup/UC
 ```
 2.  Enter the UC directory: `cd UC`
-3. Choose one of the compilers [here](https://cmake.org/cmake/help/v3.0/manual/cmake-generators.7.html) (e.g. *CodeBlocks - MinGW*) and run the following commands:
+3. Choose one of the compilers [here](https://cmake.org/cmake/help/v3.0/manual/cmake-generators.7.html) (e.g. *CodeBlocks - MinGW* or *Unix Makefiles*) and run the following commands:
 ```
 cmake -DCMAKE_BUILD_TYPE=Release -G "CodeBlocks - MinGW"
 cmake --build ./ --target all -- -j 2
 ```
-Hint: Unfortunately we have a bug with CMake so that our UC compiler runs only with CMake Debug mode. We are actually working on this issue.
 
 ### Examples
 ---
